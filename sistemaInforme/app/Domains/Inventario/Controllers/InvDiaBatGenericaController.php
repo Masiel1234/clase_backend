@@ -13,16 +13,16 @@ class InvDiaBatGenericaController extends Controller
         );
     }
 
-    public function store(Request $request)
+    public function store(StoreInvDiaBatGenericaRequest $request)
     {
-    $data = $request->rules();
+        $data = $request->validated();
         $item = InvDiaBatGenerica::create($data);
         return response()->json($item, 201);
     }
 
     public function update(Request $request, $id)
     {
-        $data = $request->rules();
+        $data = $request->validated();
         $item = InvDiaBatGenerica::findOrFail($id);
         $item->update($data);
         return response()->json($item);
