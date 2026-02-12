@@ -31,4 +31,4 @@ class InvDiaBatGenericaController extends Controller
     }
 
 
-}
+}]

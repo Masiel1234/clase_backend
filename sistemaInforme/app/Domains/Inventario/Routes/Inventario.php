@@ -11,23 +11,23 @@ use App\Domains\Inventario\Controllers\InvDiaTapaBackController;
 use App\Domains\Inventario\Controllers\InvDiaVisoresController;
 
 Route::prefix('inventario')->group(function () {
-    Route::get('dia-bat-generica', [InvDiaBatGenericaController::class, 'index'])->name('inventario.dia-bat-generica');
-    Route::get('dia-bat-original', [InvDiaBatOriginalController::class, 'index'])->name('inventario.dia-bat-original');
-    Route::get('dia-cel', [InvDiaCelController::class, 'index'])->name('inventario.dia-cel');
-    Route::get('dia-display', [InvDiaDisplayController::class, 'index'])->name('inventario.dia-display');
-    Route::get('dia-rptos-peq', [InvDiaRptosPeqController::class, 'index'])->name('inventario.dia-rptos-peq');
-    Route::get('tactil', [InvDiaTactilController::class, 'index'])->name('inventario.tactil');
-    Route::get('tapa-back', [InvDiaTapaBackController::class, 'index'])->name('inventario.tapa-back');
-    Route::get('dia-visores', [InvDiaVisoresController::class, 'index'])->name('inventario.dia-visores');
+    Route::get('dia-bat-generica/get', [InvDiaBatGenericaController::class, 'index'])->name('inventario.dia-bat-generica');
+    Route::get('dia-bat-original/get', [InvDiaBatOriginalController::class, 'index'])->name('inventario.dia-bat-original');
+    Route::get('dia-cel/get', [InvDiaCelController::class, 'index'])->name('inventario.dia-cel');
+    Route::get('dia-display/get', [InvDiaDisplayController::class, 'index'])->name('inventario.dia-display');
+    Route::get('dia-rptos-peq/get', [InvDiaRptosPeqController::class, 'index'])->name('inventario.dia-rptos-peq');
+    Route::get('tactil/get', [InvDiaTactilController::class, 'index'])->name('inventario.tactil');
+    Route::get('tapa-back/get', [InvDiaTapaBackController::class, 'index'])->name('inventario.tapa-back');
+    Route::get('dia-visores/get', [InvDiaVisoresController::class, 'index'])->name('inventario.dia-visores');
 
-    Route::post('dia-bat-generica', [InvDiaBatGenericaController::class, 'store'])->name('inventario.dia-bat-generica.store');
-    Route::post('dia-bat-original', [InvDiaBatOriginalController::class, 'store'])->name('inventario.dia-bat-original.store');
-    Route::post('dia-cel', [InvDiaCelController::class, 'store'])->name('inventario.dia-cel.store');
-    Route::post('dia-display', [InvDiaDisplayController::class, 'store'])->name('inventario.dia-display.store');
-    Route::post('dia-rptos-peq', [InvDiaRptosPeqController::class, 'store'])->name('inventario.dia-rptos-peq.store');
-    Route::post('tactil', [InvDiaTactilController::class, 'store'])->name('inventario.tactil.store');
-    Route::post('tapa-back', [InvDiaTapaBackController::class, 'store'])->name('inventario.tapa-back.store');
-    Route::post('dia-visores', [InvDiaVisoresController::class, 'store'])->name('inventario.dia-visores.store');
+    Route::post('dia-bat-generica/create', [InvDiaBatGenericaController::class, 'store'])->name('inventario.dia-bat-generica.store');
+    Route::post('dia-bat-original/create', [InvDiaBatOriginalController::class, 'store'])->name('inventario.dia-bat-original.store');
+    Route::post('dia-cel/create', [InvDiaCelController::class, 'store'])->name('inventario.dia-cel.store');
+    Route::post('dia-display/create', [InvDiaDisplayController::class, 'store'])->name('inventario.dia-display.store');
+    Route::post('dia-rptos-peq/create', [InvDiaRptosPeqController::class, 'store'])->name('inventario.dia-rptos-peq.store');
+    Route::post('tactil/create', [InvDiaTactilController::class, 'store'])->name('inventario.tactil.store');
+    Route::post('tapa-back/create', [InvDiaTapaBackController::class, 'store'])->name('inventario.tapa-back.store');
+    Route::post('dia-visores/create', [InvDiaVisoresController::class, 'store'])->name('inventario.dia-visores.store');
 
     Route::patch('dia-bat-generica/{id}', [InvDiaBatGenericaController::class, 'update'])->name('inventario.dia-bat-generica.update');
     Route::patch('dia-bat-original/{id}', [InvDiaBatOriginalController::class, 'update'])->name('inventario.dia-bat-original.update');
