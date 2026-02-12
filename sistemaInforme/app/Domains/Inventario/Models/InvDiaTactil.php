@@ -4,9 +4,9 @@ namespace App\Domains\Inventario\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class InvDiaDisplay extends Model
+class InvDiaTactil extends Model
 {
-    protected $table = 'inv_dia_display';
+    protected $table = 'inv_dia_tactil';
 
     protected $fillable = [
         'id_marca_fk',

@@ -4,7 +4,7 @@ namespace App\Domains\Inventario\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class InvDiaBatGenerica extends Model
+class InvDiaBatOriginal extends Model
 {
     protected $table = 'inv_dia_bat_original';
 

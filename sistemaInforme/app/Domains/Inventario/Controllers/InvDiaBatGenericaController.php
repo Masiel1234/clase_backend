@@ -15,7 +15,7 @@ class InvDiaBatGenericaController extends Controller
 
     public function store(Request $request)
     {
-       $data = $request->rules();
+    $data = $request->rules();
         $item = InvDiaBatGenerica::create($data);
         return response()->json($item, 201);
     }
