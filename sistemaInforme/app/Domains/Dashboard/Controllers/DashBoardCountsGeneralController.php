@@ -3,7 +3,14 @@
 namespace App\Domains\Dashboard\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
+use App\Domains\Inventario\Models\InvDiaBatGenerica;
+use App\Domains\Inventario\Models\InvDiaBatOriginal;
+use App\Domains\Inventario\Models\InvDiaCel;
+use App\Domains\Inventario\Models\InvDiaDisplay;
+use App\Domains\Inventario\Models\InvDiaTactil;
+use App\Domains\Inventario\Models\InvDiaTapaBack;
+use App\Domains\Inventario\Models\InvDiaVisores;
+use App\Domains\Inventario\Models\InvDiaRptosPeq;
 
 class DashBoardCountsGeneralController extends Controller
 {
@@ -13,43 +20,43 @@ class DashBoardCountsGeneralController extends Controller
         return response()->json([
             [
                 'nombre' => 'Baterías Genéricas',
-                'cantidad' => DB::table('inv_dia_bat_generica')->sum('cantidad'),
-                'criticos' => DB::table('inv_dia_bat_generica')->where('cantidad', '<=', 5)->count(),
+                'cantidad' => InvDiaBatGenerica::sum('cantidad'),
+                'criticos' => InvDiaBatGenerica::where('cantidad', '<=', 5)->count(),
             ],
             [
                 'nombre' => 'Baterías Originales',
-                'cantidad' => DB::table('inv_dia_bat_original')->sum('cantidad'),
-                'criticos' => DB::table('inv_dia_bat_original')->where('cantidad', '<=', 5)->count(),
+                'cantidad' => InvDiaBatOriginal::sum('cantidad'),
+                'criticos' => InvDiaBatOriginal::where('cantidad', '<=', 5)->count(),
             ],
             [
                 'nombre' => 'Displays',
-                'cantidad' => DB::table('inv_dia_display')->sum('cantidad'),
-                'criticos' => DB::table('inv_dia_display')->where('cantidad', '<=', 5)->count(),
+                'cantidad' => InvDiaDisplay::sum('t_inv_final'),
+                'criticos' => InvDiaDisplay::where('t_inv_final', '<=', 5)->count(),
             ],
             [
                 'nombre' => 'Táctiles',
-                'cantidad' => DB::table('inv_dia_tactil')->sum('cantidad'),
-                'criticos' => DB::table('inv_dia_tactil')->where('cantidad', '<=', 5)->count(),
+                'cantidad' => InvDiaTactil::sum('cantidad'),
+                'criticos' => InvDiaTactil::where('cantidad', '<=', 5)->count(),
             ],
             [
                 'nombre' => 'Tapas Back',
-                'cantidad' => DB::table('inv_dia_tapa_back')->sum('cantidad'),
-                'criticos' => DB::table('inv_dia_tapa_back')->where('cantidad', '<=', 5)->count(),
+                'cantidad' => InvDiaTapaBack::sum('t_inv_final'),
+                'criticos' => InvDiaTapaBack::where('t_inv_final', '<=', 5)->count(),
             ],
             [
                 'nombre' => 'Visores',
-                'cantidad' => DB::table('inv_dia_visores')->sum('cantidad'),
-                'criticos' => DB::table('inv_dia_visores')->where('cantidad', '<=', 5)->count(),
+                'cantidad' => InvDiaVisores::sum('t_inv_final'),
+                'criticos' => InvDiaVisores::where('t_inv_final', '<=', 5)->count(),
             ],
             [
                 'nombre' => 'Repuestos Pequeños',
-                'cantidad' => DB::table('inv_rptos_peq')->sum('cantidad'),
-                'criticos' => DB::table('inv_rptos_peq')->where('cantidad', '<=', 5)->count(),
+                'cantidad' => InvDiaRptosPeq::count(),
+                'criticos' => 0,
             ],
             [
                 'nombre' => 'Celulares',
-                'cantidad' => DB::table('inv_dia_cel')->count(),
-                'pendientes' => DB::table('inv_dia_cel')->whereNull('entrega')->count(),
+                'cantidad' => InvDiaCel::count(),
+                'pendientes' => InvDiaCel::whereNull('entrega')->count(),
             ],
         ]);
     }
