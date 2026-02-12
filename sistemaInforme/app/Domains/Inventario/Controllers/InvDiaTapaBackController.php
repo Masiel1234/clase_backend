@@ -4,6 +4,7 @@ namespace App\Domains\Inventario\Controller;
 
 use App\Http\Controllers\Controller;
 use App\Domains\Inventario\Request\InvDiaTapaBackRequest ;
+use App\Domains\Inventario\Requests\Update\UpdateInvTapaBackRequest;
 
 class InvDiaTapaBackController extends Controller
 {
@@ -14,16 +15,16 @@ class InvDiaTapaBackController extends Controller
         );
     }
 
-    public function store(Request $request)
+    public function store(StoreInvDiaTapaBackRequest $request)
     {
-    $data = $request->rules();
+        $data = $request->validated();
         $item = InvDiaTapaBack::create($data);
         return response()->json($item, 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateInvTapaBackRequest $request, $id)
     {
-        $data = $request->rules();
+        $data = $request->validated();
         $item = InvDiaTapaBack::findOrFail($id);
         $item->update($data);
         return response()->json($item);

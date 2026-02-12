@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Domains\Inventario\Controller;
+namespace App\Domains\Inventario\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Domains\Inventario\Request\InvDiaDisplayRequest;
-
-
+use Illuminate\Http\Request;
+use App\Domains\Inventario\Models\InvDiaDisplay;
+use App\Domains\Inventario\Requests\Update\UpdateInvDiaDisplayRequest;
 
 class InvDiaDisplayController extends Controller
 {
@@ -16,16 +16,16 @@ class InvDiaDisplayController extends Controller
         );
     }
 
-        public function store(Request $request)
+    public function store(StoreInvDiaDisplayRequest $request)
     {
-    $data = $request->rules();
+        $data = $request->validated();
         $item = InvDiaDisplay::create($data);
         return response()->json($item, 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateInvDiaDisplayRequest $request, $id)
     {
-        $data = $request->rules();
+        $data = $request->validated();
         $item = InvDiaDisplay::findOrFail($id);
         $item->update($data);
         return response()->json($item);

@@ -3,6 +3,7 @@ namespace App\Domains\Inventario\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Domains\Inventario\Request\InvDiaTactilRequest;
+use App\Domains\Inventario\Requests\Update\UpdateInvDiaTactilRequest;
 
 class InvDiaTactilController extends Controller
 {
@@ -13,20 +14,20 @@ class InvDiaTactilController extends Controller
         );
     }
 
-    public function store(Request $request)
+    public function store(StoreInvDiaTactilRequest $request)
     {
-    $data = $request->rules();
+        $data = $request->validated();
         $item = InvDiaTactil::create($data);
         return response()->json($item, 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateInvDiaTactilRequest $request, $id)
     {
-        $data = $request->rules();
+        $data = $request->validated();
         $item = InvDiaTactil::findOrFail($id);
         $item->update($data);
         return response()->json($item);
     }
 
 
-}   
+}

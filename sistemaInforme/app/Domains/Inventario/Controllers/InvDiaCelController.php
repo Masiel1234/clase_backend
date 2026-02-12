@@ -3,6 +3,7 @@
 namespace App\Domains\Inventario\Controllers;
 
 use App\Domains\Inventario\Requests\InvDiaCelRequest;
+use App\Domains\Inventario\Requests\Update\UpdateInvDiaCelRequestRequest;
 
 
 class InvDiaCelController extends Controller
@@ -21,9 +22,9 @@ class InvDiaCelController extends Controller
         return response()->json($item, 201);
     }
 
-        public function update(Request $request, $id)
+    public function update(UpdateInvDiaCelRequestRequest $request, $id)
     {
-        $data = $request->rules();
+        $data = $request->validated();
         $item = InvDiaCel::findOrFail($id);
         $item->update($data);
         return response()->json($item);

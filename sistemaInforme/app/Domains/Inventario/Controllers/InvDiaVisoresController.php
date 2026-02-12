@@ -4,6 +4,7 @@ namespace App\Domains\Inventario\Controller;
 
 use App\Http\Controllers\Controller;
 use App\Domains\Inventario\Request\InvDiaVisoresRequest;
+use App\Domains\Inventario\Requests\Update\UpdateInvDiaVisoresRequest;
 
 class InvDiaVisoresController extends Controller
 {
@@ -14,16 +15,16 @@ class InvDiaVisoresController extends Controller
         );
     }
 
-    public function store(Request $request)
+    public function store(StoreInvDiaVisoresRequest $request)
     {
-    $data = $request->rules();
+        $data = $request->validated();
         $item = InvDiaVisores::create($data);
         return response()->json($item, 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateInvDiaVisoresRequest $request, $id)
     {
-        $data = $request->rules();
+        $data = $request->validated();
         $item = InvDiaVisores::findOrFail($id);
         $item->update($data);
         return response()->json($item);

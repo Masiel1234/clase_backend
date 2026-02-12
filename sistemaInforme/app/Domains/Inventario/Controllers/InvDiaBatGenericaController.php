@@ -2,7 +2,9 @@
 namespace App\Domains\Inventario\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Domains\Inventario\Request\InvDiaBatGenericaRequest;
+use App\Domains\Inventario\Requests\Store\StoreInvDiaBatGenericaRequest;
+use App\Domains\Inventario\Requests\Update\UpdateInvDiaBatGenericaRequest;
+use App\Domains\Inventario\Models\InvDiaBatGenerica;
 
 class InvDiaBatGenericaController extends Controller
 {
@@ -20,7 +22,7 @@ class InvDiaBatGenericaController extends Controller
         return response()->json($item, 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateInvDiaBatGenericaRequest $request, $id)
     {
         $data = $request->validated();
         $item = InvDiaBatGenerica::findOrFail($id);

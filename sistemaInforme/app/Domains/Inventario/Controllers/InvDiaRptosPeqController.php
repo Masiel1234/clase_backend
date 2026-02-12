@@ -4,6 +4,7 @@ namespace App\Domains\Inventario\Controller;
 
 use App\Http\Controllers\Controller;
 use App\Domains\Inventario\Request\InvDiaRptosPeqRequest;
+use App\Domains\Inventario\Requests\Update\UpdateInvRptosPeqRequest;
 
 class InvDiaRptosPeqController extends Controller
 {
@@ -14,16 +15,16 @@ class InvDiaRptosPeqController extends Controller
         );
     }
 
-    public function store(Request $request)
+    public function store(StoreInvDiaRptosPeqRequest $request)
     {
-    $data = $request->rules();
+        $data = $request->validated();
         $item = InvDiaRptosPeq::create($data);
         return response()->json($item, 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateInvRptosPeqRequest $request, $id)
     {
-        $data = $request->rules();
+        $data = $request->validated();
         $item = InvDiaRptosPeq::findOrFail($id);
         $item->update($data);
         return response()->json($item);
