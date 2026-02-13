@@ -34,7 +34,7 @@ class DashBoardController extends Controller
     /**
      * Counts generales para las tarjetas superiores del dashboard
      */
-    public function obtenerCounts()
+    private function obtenerCounts()
     {
         return [
             [
@@ -83,7 +83,7 @@ class DashBoardController extends Controller
     /**
      * Productos con stock bajo (críticos) - Para tabla de alertas
      */
-    public function obtenerStockBajo()
+    private function obtenerStockBajo()
     {
         $stockBajo = [];
 
@@ -135,7 +135,7 @@ class DashBoardController extends Controller
     /**
      * Estadísticas por marca - Para gráfica de torta/pie
      */
-    public function obtenerEstadisticasMarcas()
+    private function obtenerEstadisticasMarcas()
     {
         // Consolidar stock por marca de todos los módulos
         $marcas = [];
@@ -201,7 +201,7 @@ class DashBoardController extends Controller
     /**
      * Inventario diario - Últimos registros de celulares
      */
-    public function obtenerInventarioDiario()
+    private function obtenerInventarioDiario()
     {
         return InvDiaCel::orderByDesc('fecha')
             ->limit(10)
@@ -217,7 +217,7 @@ class DashBoardController extends Controller
     /**
      * Gráficos adicionales para el dashboard
      */
-    public function obtenerGraficos()
+    private function obtenerGraficos()
     {
         return [
             'stock_por_categoria' => $this->graficoStockPorCategoria(),
@@ -309,7 +309,7 @@ class DashBoardController extends Controller
     /**
      * Sistema de alertas categorizado por severidad
      */
-    public function obtenerAlertas()
+    private function obtenerAlertas()
     {
         $alertas = [];
 
@@ -385,57 +385,5 @@ class DashBoardController extends Controller
             'advertencias' => $alertas->where('tipo', 'advertencia')->count(),
             'alertas' => $alertas->sortByDesc('tipo')->values()->take(20), // Top 20 alertas
         ];
-    }
-
-    // ========================================
-    // ENDPOINTS INDIVIDUALES (OPCIONAL)
-    // ========================================
-
-    /**
-     * Solo counts - Si necesitas actualizar solo las tarjetas
-     */
-    public function counts()
-    {
-        return response()->json($this->obtenerCounts());
-    }
-
-    /**
-     * Solo stock bajo - Si necesitas actualizar solo la tabla de alertas
-     */
-    public function stockBajo()
-    {
-        return response()->json($this->obtenerStockBajo());
-    }
-
-    /**
-     * Solo estadísticas por marca - Si necesitas actualizar solo la gráfica
-     */
-    public function estadisticasMarcas()
-    {
-        return response()->json($this->obtenerEstadisticasMarcas());
-    }
-
-    /**
-     * Solo inventario diario - Si necesitas actualizar solo la tabla
-     */
-    public function inventarioDiario()
-    {
-        return response()->json($this->obtenerInventarioDiario());
-    }
-
-    /**
-     * Solo gráficos - Si necesitas actualizar solo las gráficas
-     */
-    public function graficos()
-    {
-        return response()->json($this->obtenerGraficos());
-    }
-
-    /**
-     * Solo alertas - Si necesitas actualizar solo el sistema de alertas
-     */
-    public function alertas()
-    {
-        return response()->json($this->obtenerAlertas());
     }
 }
