@@ -19,6 +19,11 @@ interface InvDiaBatOriginal {
   devolucion: number;
 }
 
+interface Proveedor {
+  id: number;
+  nombre: string;
+}
+
 const emptyForm: Omit<InvDiaBatOriginal, 'id'> = {
   id_marca_fk: 0,
   version: '',
@@ -38,6 +43,7 @@ const emptyForm: Omit<InvDiaBatOriginal, 'id'> = {
 
 const InvDiaBatOriginalTable: React.FC = () => {
   const [data, setData] = useState<InvDiaBatOriginal[]>([]);
+  const [proveedores, setProveedores] = useState<Proveedor[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState(emptyForm);
   const [editId, setEditId] = useState<number|null>(null);
@@ -46,6 +52,12 @@ const InvDiaBatOriginalTable: React.FC = () => {
     axios.get('/api/inventario/inv-dia-bat-original')
       .then(res => Array.isArray(res.data) ? setData(res.data) : setData([]))
       .catch(() => setData([]));
+  }, []);
+  
+  useEffect(() => {
+    axios.get('/api/proveedor')
+      .then(res => Array.isArray(res.data) ? setProveedores(res.data) : setProveedores([]))
+      .catch(() => setProveedores([]));
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -92,7 +104,7 @@ const InvDiaBatOriginalTable: React.FC = () => {
               <th>Calidad</th>
               <th>Fecha</th>
               <th>Código</th>
-              <th>Proveedor</th>
+               <th>Proveedor Name</th>
               <th>Cantidad</th>
               <th>Costo</th>
               <th>V Mayor</th>
@@ -112,7 +124,7 @@ const InvDiaBatOriginalTable: React.FC = () => {
                 <td>{item.calidad}</td>
                 <td>{item.fecha}</td>
                 <td>{item.codigo}</td>
-                <td>{item.proveedor_id}</td>
+                <td>{proveedores.find(p => p.id === item.proveedor_id)?.nombre || 'Sin proveedor'}</td>
                 <td>{item.cantidad}</td>
                 <td>{item.costo}</td>
                 <td>{item.v_mayor}</td>
@@ -140,10 +152,6 @@ const InvDiaBatOriginalTable: React.FC = () => {
                 <div className="modal-body row g-2">
                   {/* Campos del formulario */}
                   <div className="col-6">
-                    <label className="form-label">ID Marca</label>
-                    <input name="id_marca_fk" value={form.id_marca_fk} onChange={handleChange} className="form-control" type="number" required />
-                  </div>
-                  <div className="col-6">
                     <label className="form-label">Versión</label>
                     <input name="version" value={form.version} onChange={handleChange} className="form-control" required />
                   </div>
@@ -165,7 +173,18 @@ const InvDiaBatOriginalTable: React.FC = () => {
                   </div>
                   <div className="col-6">
                     <label className="form-label">Proveedor</label>
-                    <input name="proveedor_id" value={form.proveedor_id} onChange={handleChange} className="form-control" type="number" required />
+                    <select
+                      name="proveedor_id"
+                      value={form.proveedor_id}
+                      onChange={handleChange}
+                      className="form-select"
+                      required
+                    >
+                      <option value="">Seleccione proveedor</option>
+                      {proveedores.map(p => (
+                        <option key={p.id} value={p.id}>{p.nombre}</option>
+                      ))}
+                    </select>
                   </div>
                   <div className="col-6">
                     <label className="form-label">Cantidad</label>

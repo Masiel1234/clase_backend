@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-
 interface Proveedor {
   id: number;
   nombre: string;
 }
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
-interface InvDiaBatGenerica {
+interface InvDiaTactil {
   id: number;
   id_marca_fk: number;
   version: string;
@@ -25,7 +24,7 @@ interface InvDiaBatGenerica {
   devolucion: number;
 }
 
-const emptyForm: Omit<InvDiaBatGenerica, 'id'> = {
+const emptyForm: Omit<InvDiaTactil, 'id'> = {
   id_marca_fk: 0,
   version: '',
   color: '',
@@ -43,8 +42,8 @@ const emptyForm: Omit<InvDiaBatGenerica, 'id'> = {
   devolucion: 0,
 };
 
-const InvDiaBatGenericaTable: React.FC = () => {
-  const [data, setData] = useState<InvDiaBatGenerica[]>([]);
+const InvDiaTactilTable: React.FC = () => {
+  const [data, setData] = useState<InvDiaTactil[]>([]);
   const [proveedores, setProveedores] = useState<Proveedor[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState(emptyForm);
@@ -56,13 +55,13 @@ const InvDiaBatGenericaTable: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    axios.get('/api/inventario/inv-dia-bat-generica')
+    axios.get('/api/inventario/inv-dia-tactil')
       .then(res => Array.isArray(res.data) ? setData(res.data) : setData([]))
       .catch(() => setData([]));
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const target = e.target as HTMLInputElement | HTMLSelectElement;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const target = e.target as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
     const { name, value, type } = target;
     setForm(prev => ({
       ...prev,
@@ -73,17 +72,17 @@ const InvDiaBatGenericaTable: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editId) {
-      await axios.put(`/api/inventario/inv-dia-bat-generica/${editId}`, form);
+      await axios.put(`/api/inventario/inv-dia-tactil/${editId}`, form);
     } else {
-      await axios.post('/api/inventario/inv-dia-bat-generica', form);
+      await axios.post('/api/inventario/inv-dia-tactil', form);
     }
     setShowModal(false);
     setEditId(null);
     setForm(emptyForm);
-    axios.get('/api/inventario/inv-dia-bat-generica').then(res => setData(res.data));
+    axios.get('/api/inventario/inv-dia-tactil').then(res => Array.isArray(res.data) ? setData(res.data) : setData([]));
   };
 
-  const handleEdit = (item: InvDiaBatGenerica) => {
+  const handleEdit = (item: InvDiaTactil) => {
     setForm({ ...item });
     setEditId(item.id);
     setShowModal(true);
@@ -92,14 +91,14 @@ const InvDiaBatGenericaTable: React.FC = () => {
   return (
     <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
       <div className="card-header bg-white p-3 d-flex justify-content-between align-items-center">
-        <h5 className="mb-0 fw-bold">Inventario Batería Genérica</h5>
+        <h5 className="mb-0 fw-bold">Inventario Táctil</h5>
         <button className="btn btn-primary btn-sm" onClick={() => { setShowModal(true); setEditId(null); setForm(emptyForm); }}>Nuevo</button>
       </div>
       <div className="table-responsive">
         <table className="table table-hover align-middle mb-0">
           <thead className="table-light">
             <tr className="small text-uppercase text-muted">
-              {/* <th className="px-4">ID Marca</th> */}
+              <th className="px-4">ID Marca</th>
               <th>Versión</th>
               <th>Color</th>
               <th>Calidad</th>
@@ -120,15 +119,13 @@ const InvDiaBatGenericaTable: React.FC = () => {
           <tbody>
             {(Array.isArray(data) ? data : []).map(item => (
               <tr key={item.id}>
-                {/* <td className="px-4 fw-bold">{item.id_marca_fk}</td> */}
+                <td className="px-4 fw-bold">{item.id_marca_fk}</td>
                 <td>{item.version}</td>
                 <td>{item.color}</td>
                 <td>{item.calidad}</td>
                 <td>{item.fecha}</td>
                 <td>{item.codigo}</td>
-                <td>{
-                  proveedores.find(p => p.id === item.proveedor_id)?.nombre || 'Sin proveedor'
-                }</td>
+                <td>{proveedores.find(p => p.id === item.proveedor_id)?.nombre || 'Sin proveedor'}</td>
                 <td>{item.cantidad}</td>
                 <td>{item.costo}</td>
                 <td>{item.v_mayor}</td>
@@ -150,18 +147,16 @@ const InvDiaBatGenericaTable: React.FC = () => {
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">{editId ? 'Editar' : 'Crear'} Batería Genérica</h5>
+                <h5 className="modal-title">{editId ? 'Editar' : 'Crear'} Táctil</h5>
                 <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
               </div>
               <form onSubmit={handleSubmit}>
                 <div className="modal-body row g-2">
                   {/* Campos del formulario */}
-                  {/*
                   <div className="col-6">
                     <label className="form-label">ID Marca</label>
                     <input name="id_marca_fk" value={form.id_marca_fk} onChange={handleChange} className="form-control" type="number" required />
                   </div>
-                  */}
                   <div className="col-6">
                     <label className="form-label">Versión</label>
                     <input name="version" value={form.version} onChange={handleChange} className="form-control" required />
@@ -243,4 +238,4 @@ const InvDiaBatGenericaTable: React.FC = () => {
   );
 };
 
-export default InvDiaBatGenericaTable;
+export default InvDiaTactilTable;

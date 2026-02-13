@@ -1,9 +1,10 @@
+
 import React from 'react';
-import InvDiaBatGenericaTable from './InvDiaBatGenericaTable';
+import InvDiaDisplayTable from './InvDiaDisplayTable';
 import MainHeader from '../../principal-Components/MainHeader';
 import SidebarNav from '../../principal-Components/SidebarNav';
 
-const InvDiaBatGenerica: React.FC = () => {
+const InvDiaDisplay: React.FC = () => {
 	return (
 		<div className="container-fluid p-0 d-flex" style={{ minHeight: '100vh', backgroundColor: '#f8fafc' }}>
 			{/* SIDEBAR */}
@@ -14,11 +15,13 @@ const InvDiaBatGenerica: React.FC = () => {
 			<main className="flex-grow-1">
 				<MainHeader />
 				<div className="p-4" style={{ maxHeight: 'calc(100vh - 100px)', overflowY: 'auto' }}>
-					<InvDiaBatGenericaTable />
+					<InvDiaDisplayTable />
 				</div>
 			</main>
 		</div>
 	);
 };
 
-export default InvDiaBatGenerica;
+export default InvDiaDisplay;
+
+
