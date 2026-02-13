@@ -9,6 +9,12 @@ const SidebarNav = () => {
 
   return (
     <div className="nav flex-column gap-2">
+      <div className="d-flex align-items-center gap-2 mb-4 p-2">
+        <div className="bg-primary p-2 rounded">
+          <LayoutDashboard size={20} color="white" />
+        </div>
+        <span className="fs-4 fw-bold">Nombre empresa</span>
+      </div>
       <NavItem icon={<LayoutDashboard size={18}/>} label="Dashboard" onClick={() => navigate('/dashboard')} active />
       <div>
         <a href="#" className="nav-link d-flex align-items-center justify-content-between p-3 rounded-3 text-secondary" onClick={() => setOpen(!open)} style={{ textDecoration: 'none' }}>
@@ -34,6 +40,11 @@ const SidebarNav = () => {
       <NavItem icon={<Users size={18}/>} label="Proveedor" onClick={() => navigate('/proveedor')} />
     </div>
   );
-};
+};<div className="d-flex align-items-center gap-2 mb-4 p-2">
+          <div className="bg-primary p-2 rounded">
+            <LayoutDashboard size={20} color="white" />
+          </div>
+          <span className="fs-4 fw-bold">Nombre empresa</span>
+        </div>
 
 export default SidebarNav;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-interface InvDiaBatGenerica {
+interface InvDiaBatOriginal {
   id: number;
   id_marca_fk: number;
   version: string;
@@ -13,14 +13,13 @@ interface InvDiaBatGenerica {
   cantidad: number;
   costo: number;
   v_mayor: number;
-  rebaja: number;
   pedir: boolean;
   faltantes: number;
   celulares: string;
   devolucion: number;
 }
 
-const emptyForm: Omit<InvDiaBatGenerica, 'id'> = {
+const emptyForm: Omit<InvDiaBatOriginal, 'id'> = {
   id_marca_fk: 0,
   version: '',
   color: '',
@@ -31,22 +30,21 @@ const emptyForm: Omit<InvDiaBatGenerica, 'id'> = {
   cantidad: 0,
   costo: 0,
   v_mayor: 0,
-  rebaja: 0,
   pedir: false,
   faltantes: 0,
   celulares: '',
   devolucion: 0,
 };
 
-const InvDiaBatGenericaTable: React.FC = () => {
-  const [data, setData] = useState<InvDiaBatGenerica[]>([]);
+const InvDiaBatOriginalTable: React.FC = () => {
+  const [data, setData] = useState<InvDiaBatOriginal[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState(emptyForm);
   const [editId, setEditId] = useState<number|null>(null);
 
   useEffect(() => {
-    axios.get('/api/inventario/inv-dia-bat-generica')
-      .then(res => setData(res.data))
+    axios.get('/api/inventario/inv-dia-bat-original')
+      .then(res => Array.isArray(res.data) ? setData(res.data) : setData([]))
       .catch(() => setData([]));
   }, []);
 
@@ -62,17 +60,17 @@ const InvDiaBatGenericaTable: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editId) {
-      await axios.put(`/api/inventario/inv-dia-bat-generica/${editId}`, form);
+      await axios.put(`/api/inventario/inv-dia-bat-original/${editId}`, form);
     } else {
-      await axios.post('/api/inventario/inv-dia-bat-generica', form);
+      await axios.post('/api/inventario/inv-dia-bat-original', form);
     }
     setShowModal(false);
     setEditId(null);
     setForm(emptyForm);
-    axios.get('/api/inventario/inv-dia-bat-generica').then(res => setData(res.data));
+    axios.get('/api/inventario/inv-dia-bat-original').then(res => Array.isArray(res.data) ? setData(res.data) : setData([]));
   };
 
-  const handleEdit = (item: InvDiaBatGenerica) => {
+  const handleEdit = (item: InvDiaBatOriginal) => {
     setForm({ ...item });
     setEditId(item.id);
     setShowModal(true);
@@ -81,7 +79,7 @@ const InvDiaBatGenericaTable: React.FC = () => {
   return (
     <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
       <div className="card-header bg-white p-3 d-flex justify-content-between align-items-center">
-        <h5 className="mb-0 fw-bold">Inventario Batería Genérica</h5>
+        <h5 className="mb-0 fw-bold">Inventario Batería Original</h5>
         <button className="btn btn-primary btn-sm" onClick={() => { setShowModal(true); setEditId(null); setForm(emptyForm); }}>Nuevo</button>
       </div>
       <div className="table-responsive">
@@ -98,7 +96,6 @@ const InvDiaBatGenericaTable: React.FC = () => {
               <th>Cantidad</th>
               <th>Costo</th>
               <th>V Mayor</th>
-              <th>Rebaja</th>
               <th>Pedir</th>
               <th>Faltantes</th>
               <th>Celulares</th>
@@ -107,7 +104,7 @@ const InvDiaBatGenericaTable: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map(item => (
+            {(Array.isArray(data) ? data : []).map(item => (
               <tr key={item.id}>
                 <td className="px-4 fw-bold">{item.id_marca_fk}</td>
                 <td>{item.version}</td>
@@ -119,7 +116,6 @@ const InvDiaBatGenericaTable: React.FC = () => {
                 <td>{item.cantidad}</td>
                 <td>{item.costo}</td>
                 <td>{item.v_mayor}</td>
-                <td>{item.rebaja}</td>
                 <td>{item.pedir ? 'Sí' : 'No'}</td>
                 <td>{item.faltantes}</td>
                 <td>{item.celulares}</td>
@@ -137,7 +133,7 @@ const InvDiaBatGenericaTable: React.FC = () => {
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">{editId ? 'Editar' : 'Crear'} Batería Genérica</h5>
+                <h5 className="modal-title">{editId ? 'Editar' : 'Crear'} Batería Original</h5>
                 <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
               </div>
               <form onSubmit={handleSubmit}>
@@ -184,10 +180,6 @@ const InvDiaBatGenericaTable: React.FC = () => {
                     <input name="v_mayor" value={form.v_mayor} onChange={handleChange} className="form-control" type="number" step="0.01" required />
                   </div>
                   <div className="col-6">
-                    <label className="form-label">Rebaja</label>
-                    <input name="rebaja" value={form.rebaja} onChange={handleChange} className="form-control" type="number" step="0.01" />
-                  </div>
-                  <div className="col-6">
                     <label className="form-label">Pedir</label>
                     <input name="pedir" checked={form.pedir} onChange={handleChange} className="form-check-input ms-2" type="checkbox" />
                   </div>
@@ -217,4 +209,4 @@ const InvDiaBatGenericaTable: React.FC = () => {
   );
 };
 
-export default InvDiaBatGenericaTable;
+export default InvDiaBatOriginalTable;

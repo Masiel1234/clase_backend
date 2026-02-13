@@ -32,12 +32,7 @@ const App = () => {
       
       {/* SIDEBAR */}
       <nav className="d-none d-lg-flex flex-column p-3 text-white" style={{ width: '260px', backgroundColor: '#0f172a' }}>
-        <div className="d-flex align-items-center gap-2 mb-4 p-2">
-          <div className="bg-primary p-2 rounded">
-            <LayoutDashboard size={20} color="white" />
-          </div>
-          <span className="fs-4 fw-bold">Inventario</span>
-        </div>
+        
         <SidebarNav />
       </nav>
 
