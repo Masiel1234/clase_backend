@@ -2,8 +2,9 @@
 namespace App\Domains\Proveedor\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Domains\Proveedor\Requests\Store\StoreProveedorRequest;
-use App\Domains\Proveedor\Requests\Update\UpdateProveedoRequest;
+use App\Domains\Proveedor\Request\Store\StoreProveedorRequest;
+use App\Domains\Proveedor\Request\Update\UpdateProveedorRequest;
+use App\Domains\Proveedor\Models\Proveedor;
 
 class ProveedorController extends Controller
 {

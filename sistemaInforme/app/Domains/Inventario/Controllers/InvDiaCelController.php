@@ -2,9 +2,10 @@
 
 namespace App\Domains\Inventario\Controllers;
 
-use App\Domains\Inventario\Requests\InvDiaCelRequest;
-use App\Domains\Inventario\Requests\Update\UpdateInvDiaCelRequestRequest;
-
+use App\Http\Controllers\Controller;
+use App\Domains\Inventario\Requests\Store\StoreInvDiaCelRequest;
+use App\Domains\Inventario\Requests\Update\UpdateInvDiaCelRequest;
+use App\Domains\Inventario\Models\InvDiaCel;
 
 class InvDiaCelController extends Controller
 {

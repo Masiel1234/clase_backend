@@ -3,8 +3,9 @@
 namespace App\Domains\Inventario\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Domains\Inventario\Request\InvDiaTapaBackRequest ;
+use App\Domains\Inventario\Requests\Store\StoreInvDiaTapaBackRequest;
 use App\Domains\Inventario\Requests\Update\UpdateInvTapaBackRequest;
+use App\Domains\Inventario\Models\InvDiaTapaBack;
 
 class InvDiaTapaBackController extends Controller
 {

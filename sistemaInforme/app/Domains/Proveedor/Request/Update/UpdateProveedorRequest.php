@@ -1,7 +1,7 @@
 <?php
 namespace App\Domains\Proveedor\Request\Update;
 
-use illuminate\Foundation\Http\FormRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateProveedorRequest extends FormRequest
 {

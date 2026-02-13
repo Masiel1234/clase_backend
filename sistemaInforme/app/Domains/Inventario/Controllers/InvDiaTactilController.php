@@ -2,8 +2,9 @@
 namespace App\Domains\Inventario\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Domains\Inventario\Request\InvDiaTactilRequest;
+use App\Domains\Inventario\Requests\Store\StoreInvDiaTactilRequest;
 use App\Domains\Inventario\Requests\Update\UpdateInvDiaTactilRequest;
+use App\Domains\Inventario\Models\InvDiaTactil;
 
 class InvDiaTactilController extends Controller
 {

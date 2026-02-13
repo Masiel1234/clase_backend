@@ -3,8 +3,9 @@
 namespace App\Domains\Inventario\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Domains\Inventario\Request\InvDiaVisoresRequest;
+use App\Domains\Inventario\Requests\Store\StoreInvDiaVisoresRequest;
 use App\Domains\Inventario\Requests\Update\UpdateInvDiaVisoresRequest;
+use App\Domains\Inventario\Models\InvDiaVisores;
 
 class InvDiaVisoresController extends Controller
 {

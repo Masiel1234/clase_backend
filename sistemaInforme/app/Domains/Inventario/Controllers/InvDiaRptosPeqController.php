@@ -3,8 +3,9 @@
 namespace App\Domains\Inventario\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Domains\Inventario\Request\InvDiaRptosPeqRequest;
+use App\Domains\Inventario\Requests\Store\StoreInvDiaRptosPeqRequest;
 use App\Domains\Inventario\Requests\Update\UpdateInvRptosPeqRequest;
+use App\Domains\Inventario\Models\InvDiaRptosPeq;
 
 class InvDiaRptosPeqController extends Controller
 {

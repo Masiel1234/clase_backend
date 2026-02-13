@@ -3,8 +3,9 @@
 namespace App\Domains\Inventario\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Domains\Inventario\Request\InvDiaBatOriginalRequest;
+use App\Domains\Inventario\Requests\Store\StoreInvDiaBatOriginalRequest;
 use App\Domains\Inventario\Requests\Update\UpdateInvDiaBatOriginalRequest;
+use App\Domains\Inventario\Models\InvDiaBatOriginal;
 
 class InvDiaBatOriginalController extends Controller
 {
