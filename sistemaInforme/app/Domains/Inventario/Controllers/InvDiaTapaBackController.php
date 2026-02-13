@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domains\Inventario\Controller;
+namespace App\Domains\Inventario\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Domains\Inventario\Request\InvDiaTapaBackRequest ;

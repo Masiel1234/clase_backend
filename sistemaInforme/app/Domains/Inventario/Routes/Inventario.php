@@ -10,7 +10,7 @@ use App\Domains\Inventario\Controllers\InvDiaTactilController;
 use App\Domains\Inventario\Controllers\InvDiaTapaBackController;
 use App\Domains\Inventario\Controllers\InvDiaVisoresController;
 
-Route::prefix('inventario')->group(function () {
+Route::prefix('Inventario')->group(function () {
     Route::get('dia-bat-generica/get', [InvDiaBatGenericaController::class, 'index'])->name('inventario.dia-bat-generica');
     Route::get('dia-bat-original/get', [InvDiaBatOriginalController::class, 'index'])->name('inventario.dia-bat-original');
     Route::get('dia-cel/get', [InvDiaCelController::class, 'index'])->name('inventario.dia-cel');
