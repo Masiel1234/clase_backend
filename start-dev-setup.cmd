@@ -2,7 +2,7 @@
 REM Script para montar la base de datos MySQL en Windows
 SETLOCAL
 SET ROOTDIR=%~dp0
-SET DBFILE=%ROOTDIR%db\esquema.sql
+SET DBFILE=%ROOTDIR%db\esquema_actualizado.sql
 
 REM Cambia el usuario y contraseña si es necesario
 SET MYSQL_USER=root
