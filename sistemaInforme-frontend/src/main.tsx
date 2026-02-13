@@ -8,6 +8,8 @@ import InvDiaTapaBack from './Inventario/InvDiaTapaBack/InvDiaTapaBack';
 import InvDiaTactil from './Inventario/InvDiaTactil/InvDiaTactil';
 import InvDiaVisores from './Inventario/InvDiaVisores/InvDiaVisores';
 import InvDiaRptosPeq from './Inventario/InvDiaRptosPeq/InvDiaRptosPeq';
+import Marca from './Catalogos/Marca';
+import Proveedor from './Catalogos/Proveedor';
 
 
 import './style.css';
@@ -29,6 +31,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <Route path="/inventario/visores" element={<InvDiaVisores />} />
       <Route path="/inventario/rptos-peq" element={<InvDiaRptosPeq />} />
       <Route path="/inventario/cel" element={<InvDiaCel />} />
+      <Route path="/marca" element={<Marca />} />
+      <Route path="/proveedor" element={<Proveedor />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
