@@ -27,9 +27,6 @@ const StockAlertTable: React.FC<StockAlertTableProps> = ({ data }) => (
             <tr key={item.id}>
               <td className="px-4 fw-bold">{item.referencia}</td>
               <td className="text-danger fw-bold">{item.stock}</td>
-              <td className="text-center">
-                <button className="btn btn-warning btn-sm rounded-pill">Avisar</button>
-              </td>
             </tr>
           ))}
         </tbody>
