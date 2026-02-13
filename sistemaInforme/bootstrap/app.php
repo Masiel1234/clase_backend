@@ -12,7 +12,10 @@ return Application::configure(basePath: dirname(__DIR__))
         then: function () {
             Route::middleware('api')
                 ->prefix('api')
-                    ->group(base_path('app/Domains/Inventario/Routes/Inventario.php'));
+                ->group(base_path('app/Domains/Inventario/Routes/Inventario.php'));
+            Route::middleware('api')
+                ->prefix('api')
+                ->group(base_path('app/Domains/Dashboard/Routes/Dashboard.php'));
         }
     )
     ->withMiddleware(function (Middleware $middleware): void {
