@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useAuth } from '../auth/AuthContext';
 import { proveedorAPI } from '../apis/api';
 
 interface Proveedor {
@@ -58,11 +59,14 @@ const ProveedorTable: React.FC = () => {
     proveedorAPI.getAll().then(res => Array.isArray(res.data) ? setData(res.data) : setData([]));
   };
 
+  const { user } = useAuth();
   return (
     <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
       <div className="card-header bg-white p-3 d-flex justify-content-between align-items-center">
         <h5 className="mb-0 fw-bold">Catálogo de Proveedores</h5>
-        <button className="btn btn-primary btn-sm" onClick={() => { setShowModal(true); setEditId(null); setForm(emptyForm); }}>Nuevo Proveedor</button>
+        {user?.rol === 'admin' && (
+          <button className="btn btn-primary btn-sm" onClick={() => { setShowModal(true); setEditId(null); setForm(emptyForm); }}>Nuevo Proveedor</button>
+        )}
       </div>
       <div className="table-responsive">
         <table className="table table-hover align-middle mb-0">
@@ -81,8 +85,12 @@ const ProveedorTable: React.FC = () => {
                 <td>{item.nombre}</td>
                 <td>{item.activo ? 'Sí' : 'No'}</td>
                 <td>
-                  <button className="btn btn-warning btn-sm me-2" onClick={() => handleEdit(item)}>Editar</button>
-                  <button className="btn btn-danger btn-sm" onClick={() => handleDeactivate(item.id)}>Desactivar</button>
+                  {user?.rol === 'admin' && (
+                    <>
+                      <button className="btn btn-warning btn-sm me-2" onClick={() => handleEdit(item)}>Editar</button>
+                      <button className="btn btn-danger btn-sm" onClick={() => handleDeactivate(item.id)}>Desactivar</button>
+                    </>
+                  )}
                 </td>
               </tr>
             ))}

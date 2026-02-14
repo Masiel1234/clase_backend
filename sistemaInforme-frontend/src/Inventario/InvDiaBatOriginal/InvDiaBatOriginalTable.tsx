@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useAuth } from '../../auth/AuthContext';
 import { batOriginalAPI, proveedorAPI, marcaAPI } from '../../apis/api';
 
 interface InvDiaBatOriginal {
@@ -39,13 +40,13 @@ const emptyForm: Omit<InvDiaBatOriginal, 'id'> = {
   fecha: '',
   codigo: '',
   proveedor_id: 0,
-  cantidad: 0,
-  costo: 0,
-  v_mayor: 0,
+  cantidad: 1,
+  costo: 1,
+  v_mayor: 1,
   pedir: false,
-  faltantes: 0,
+  faltantes: 1,
   celulares: '',
-  devolucion: 0,
+  devolucion: 1,
 };
 
 const InvDiaBatOriginalTable: React.FC = () => {
@@ -100,13 +101,16 @@ const InvDiaBatOriginalTable: React.FC = () => {
     setShowModal(true);
   };
 
+  const { user } = useAuth();
   return (
     <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
       <div className="card-header bg-white p-3 d-flex justify-content-between align-items-center">
         <h5 className="mb-0 fw-bold">Inventario Batería Original</h5>
-        <button className="btn btn-primary btn-sm" onClick={() => { setShowModal(true); setEditId(null); setForm(emptyForm); }}>Nuevo</button>
+        {user?.rol === 'admin' && (
+          <button className="btn btn-primary btn-sm" onClick={() => { setShowModal(true); setEditId(null); setForm(emptyForm); }}>Nuevo</button>
+        )}
       </div>
-      <div className="table-responsive">
+      <div className="table-responsive" style={{overflowX: 'auto'}}>
         <table className="table table-hover align-middle mb-0">
           <thead className="table-light">
             <tr className="small text-uppercase text-muted">
@@ -138,14 +142,16 @@ const InvDiaBatOriginalTable: React.FC = () => {
                 <td>{item.codigo}</td>
                 <td>{proveedores.find(p => p.id === item.proveedor_id)?.nombre || 'Sin proveedor'}</td>
                 <td>{item.cantidad}</td>
-                <td>{item.costo}</td>
+                <td>{new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 2 }).format(item.costo)}</td>
                 <td>{item.v_mayor}</td>
                 <td>{item.pedir ? 'Sí' : 'No'}</td>
                 <td>{item.faltantes}</td>
                 <td>{item.celulares}</td>
                 <td>{item.devolucion}</td>
                 <td>
-                  <button className="btn btn-warning btn-sm" onClick={() => handleEdit(item)}>Editar</button>
+                  {user?.rol === 'admin' && (
+                    <button className="btn btn-warning btn-sm" onClick={() => handleEdit(item)}>Editar</button>
+                  )}
                 </td>
               </tr>
             ))}
@@ -209,15 +215,20 @@ const InvDiaBatOriginalTable: React.FC = () => {
                   </div>
                   <div className="col-6">
                     <label className="form-label">Cantidad</label>
-                    <input name="cantidad" value={form.cantidad} onChange={handleChange} className="form-control" type="number" required />
+                    <input name="cantidad" value={form.cantidad} onChange={handleChange} className="form-control" type="number" min={1} step={1} required />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Costo</label>
-                    <input name="costo" value={form.costo} onChange={handleChange} className="form-control" type="number" step="0.01" required />
+                    <div className="input-group">
+                      <span className="input-group-text">$</span>
+                      <input name="costo" value={form.costo} onChange={handleChange} className="form-control" type="number" min={1} step="1" required placeholder="Ej: 10000" />
+                    </div>
+                    <div className="form-text">Pesos colombianos (COP)</div>
                   </div>
                   <div className="col-6">
                     <label className="form-label">V Mayor</label>
-                    <input name="v_mayor" value={form.v_mayor} onChange={handleChange} className="form-control" type="number" step="0.01" required />
+                    <input name="v_mayor" value={form.v_mayor} onChange={handleChange} className="form-control" type="number" min={0.01} step="0.01" required placeholder="Ej: 12000.00" />
+                    <div className="form-text">COP</div>
                   </div>
                   <div className="col-6">
                     <label className="form-label">Pedir</label>
@@ -225,7 +236,7 @@ const InvDiaBatOriginalTable: React.FC = () => {
                   </div>
                   <div className="col-6">
                     <label className="form-label">Faltantes</label>
-                    <input name="faltantes" value={form.faltantes} onChange={handleChange} className="form-control" type="number" />
+                    <input name="faltantes" value={form.faltantes} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Celulares</label>
@@ -233,7 +244,7 @@ const InvDiaBatOriginalTable: React.FC = () => {
                   </div>
                   <div className="col-6">
                     <label className="form-label">Devolución</label>
-                    <input name="devolucion" value={form.devolucion} onChange={handleChange} className="form-control" type="number" />
+                    <input name="devolucion" value={form.devolucion} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                 </div>
                 <div className="modal-footer">

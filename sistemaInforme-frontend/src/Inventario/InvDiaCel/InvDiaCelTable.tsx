@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useAuth } from '../../auth/AuthContext';
 import { celularesAPI } from '../../apis/api';
 
 interface InvDiaCel {
@@ -28,7 +29,7 @@ interface InvDiaCel {
 
 const emptyForm: Omit<InvDiaCel, 'id'> = {
   fecha: '',
-  costo: 0,
+  costo: 1,
   referencia: '',
   software: '',
   tarjeta: '',
@@ -43,7 +44,7 @@ const emptyForm: Omit<InvDiaCel, 'id'> = {
   mantenimiento: '',
   logica: '',
   entrega: '',
-  abonos: 0,
+  abonos: 1,
   fecha_entrega_pago: '',
   no_entrega_o_garantia: '',
   devolucion: '',
@@ -64,7 +65,7 @@ const InvDiaCelTable: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const target = e.target as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
-    const { name, value, type } = target;
+    const { name, value } = target;
     setForm(prev => ({
       ...prev,
       [name]: value
@@ -90,13 +91,16 @@ const InvDiaCelTable: React.FC = () => {
     setShowModal(true);
   };
 
+  const { user } = useAuth();
   return (
     <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
       <div className="card-header bg-white p-3 d-flex justify-content-between align-items-center">
         <h5 className="mb-0 fw-bold">Inventario Celulares</h5>
-        <button className="btn btn-primary btn-sm" onClick={() => { setShowModal(true); setEditId(null); setForm(emptyForm); }}>Nuevo</button>
+        {user?.rol === 'admin' && (
+          <button className="btn btn-primary btn-sm" onClick={() => { setShowModal(true); setEditId(null); setForm(emptyForm); }}>Nuevo</button>
+        )}
       </div>
-      <div className="table-responsive">
+      <div className="table-responsive" style={{overflowX: 'auto'}}>
         <table className="table table-hover align-middle mb-0">
           <thead className="table-light">
             <tr className="small text-uppercase text-muted">
@@ -128,7 +132,9 @@ const InvDiaCelTable: React.FC = () => {
             {(Array.isArray(data) ? data : []).map(item => (
               <tr key={item.id}>
                 <td className="px-4 fw-bold">{item.fecha}</td>
-                <td>{item.costo}</td>
+                <td>{
+                  new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 2 }).format(Number(item.costo) || 0)
+                }</td>
                 <td>{item.referencia}</td>
                 <td>{item.software}</td>
                 <td>{item.tarjeta}</td>
@@ -149,7 +155,9 @@ const InvDiaCelTable: React.FC = () => {
                 <td>{item.devolucion}</td>
                 <td>{item.terceros_comentos}</td>
                 <td>
-                  <button className="btn btn-warning btn-sm" onClick={() => handleEdit(item)}>Editar</button>
+                  {user?.rol === 'admin' && (
+                    <button className="btn btn-warning btn-sm" onClick={() => handleEdit(item)}>Editar</button>
+                  )}
                 </td>
               </tr>
             ))}
@@ -173,7 +181,10 @@ const InvDiaCelTable: React.FC = () => {
                   </div>
                   <div className="col-6">
                     <label className="form-label">Costo</label>
-                    <input name="costo" value={form.costo} onChange={handleChange} className="form-control" type="number" step="0.01" required />
+                      <div className="input-group">
+                        <span className="input-group-text">$</span>
+                        <input name="costo" value={form.costo} onChange={handleChange} className="form-control" type="number" min={1} step={1} required />
+                      </div>
                   </div>
                   <div className="col-6">
                     <label className="form-label">Referencia</label>

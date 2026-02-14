@@ -1,7 +1,13 @@
+
 <?php
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+
+Route::get('/prueba', function () {
+    return response()->json(['ok' => true, 'msg' => 'El backend responde']);
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +20,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+use App\Http\Controllers\AuthController;
+
 Route::get('/test', function () {
     return response()->json(['message' => 'API funcionando correctamente']);
 });
+
+Route::post('/login', [AuthController::class, 'login']);

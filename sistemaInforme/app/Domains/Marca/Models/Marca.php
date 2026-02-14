@@ -9,6 +9,7 @@ class Marca extends Model
     protected $table = 'marcas';
 
     protected $fillable = [
-        'nombre'
+        'nombre',
+        'proveedor_id',
     ];
 }

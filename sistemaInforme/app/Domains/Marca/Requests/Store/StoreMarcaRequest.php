@@ -10,6 +10,7 @@ class StoreMarcaRequest extends FormRequest
     {
         return [
             'nombre' => 'required|string|max:255',
+            'proveedor_id' => 'required|integer|exists:proveedor,id',
         ];
     }
 }

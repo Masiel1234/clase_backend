@@ -15,26 +15,17 @@ import Proveedor from './Catalogos/Proveedor';
 import './style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Dashboard from './Dashboard/Dashboard';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
+import AppRoutes from './AppRoutes';
+import { AuthProvider } from './auth/AuthContext';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/inventario/bat-generica" element={<InvDiaBatGenerica />} />
-        <Route path="/inventario/bat-original" element={<InvDiaBatOriginal />} />
-        <Route path="/inventario/display" element={<InvDiaDisplay />} />
-        <Route path="/inventario/tapa-back" element={<InvDiaTapaBack />} />
-        <Route path="/inventario/tactil" element={<InvDiaTactil />} />
-        <Route path="/inventario/visores" element={<InvDiaVisores />} />
-      <Route path="/inventario/rptos-peq" element={<InvDiaRptosPeq />} />
-      <Route path="/inventario/cel" element={<InvDiaCel />} />
-      <Route path="/marca" element={<Marca />} />
-      <Route path="/proveedor" element={<Proveedor />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    </AuthProvider>
   </React.StrictMode>
 );
 

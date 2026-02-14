@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useAuth } from '../../auth/AuthContext';
 import { rptosPeqAPI, marcaAPI } from '../../apis/api';
 
 interface Marca {
@@ -33,25 +34,25 @@ interface InvDiaRptosPeq {
 
 const emptyForm: Omit<InvDiaRptosPeq, 'id'> = {
   id_marca_fk: 0,
-  v3: 0,
-  v8: 0,
-  tc: 0,
-  tablet: 0,
-  chinos: 0,
-  mic_dig: 0,
-  power: 0,
-  audio: 0,
-  conector_carga: 0,
-  lector_huella: 0,
-  auricular: 0,
-  parlante: 0,
-  logic_carga: 0,
-  home: 0,
-  delantera_visor: 0,
-  trasera_visor: 0,
-  antena: 0,
-  porta_sim: 0,
-  boton_lateral: 0,
+  v3: 1,
+  v8: 1,
+  tc: 1,
+  tablet: 1,
+  chinos: 1,
+  mic_dig: 1,
+  power: 1,
+  audio: 1,
+  conector_carga: 1,
+  lector_huella: 1,
+  auricular: 1,
+  parlante: 1,
+  logic_carga: 1,
+  home: 1,
+  delantera_visor: 1,
+  trasera_visor: 1,
+  antena: 1,
+  porta_sim: 1,
+  boton_lateral: 1,
 };
 
 const InvDiaRptosPeqTable: React.FC = () => {
@@ -99,13 +100,16 @@ const InvDiaRptosPeqTable: React.FC = () => {
     setShowModal(true);
   };
 
+  const { user } = useAuth();
   return (
     <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
       <div className="card-header bg-white p-3 d-flex justify-content-between align-items-center">
         <h5 className="mb-0 fw-bold">Inventario Repuestos Pequeños</h5>
-        <button className="btn btn-primary btn-sm" onClick={() => { setShowModal(true); setEditId(null); setForm(emptyForm); }}>Nuevo</button>
+        {user?.rol === 'admin' && (
+          <button className="btn btn-primary btn-sm" onClick={() => { setShowModal(true); setEditId(null); setForm(emptyForm); }}>Nuevo</button>
+        )}
       </div>
-      <div className="table-responsive">
+      <div className="table-responsive" style={{overflowX: 'auto'}}>
         <table className="table table-hover align-middle mb-0">
           <thead className="table-light">
             <tr className="small text-uppercase text-muted">
@@ -156,7 +160,9 @@ const InvDiaRptosPeqTable: React.FC = () => {
                 <td>{item.porta_sim}</td>
                 <td>{item.boton_lateral}</td>
                 <td>
-                  <button className="btn btn-warning btn-sm" onClick={() => handleEdit(item)}>Editar</button>
+                  {user?.rol === 'admin' && (
+                    <button className="btn btn-warning btn-sm" onClick={() => handleEdit(item)}>Editar</button>
+                  )}
                 </td>
               </tr>
             ))}
@@ -185,79 +191,79 @@ const InvDiaRptosPeqTable: React.FC = () => {
                   </div>
                   <div className="col-6">
                     <label className="form-label">V3</label>
-                    <input name="v3" value={form.v3} onChange={handleChange} className="form-control" type="number" />
+                    <input name="v3" value={form.v3} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">V8</label>
-                    <input name="v8" value={form.v8} onChange={handleChange} className="form-control" type="number" />
+                    <input name="v8" value={form.v8} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">TC</label>
-                    <input name="tc" value={form.tc} onChange={handleChange} className="form-control" type="number" />
+                    <input name="tc" value={form.tc} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Tablet</label>
-                    <input name="tablet" value={form.tablet} onChange={handleChange} className="form-control" type="number" />
+                    <input name="tablet" value={form.tablet} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Chinos</label>
-                    <input name="chinos" value={form.chinos} onChange={handleChange} className="form-control" type="number" />
+                    <input name="chinos" value={form.chinos} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Mic Dig</label>
-                    <input name="mic_dig" value={form.mic_dig} onChange={handleChange} className="form-control" type="number" />
+                    <input name="mic_dig" value={form.mic_dig} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Power</label>
-                    <input name="power" value={form.power} onChange={handleChange} className="form-control" type="number" />
+                    <input name="power" value={form.power} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Audio</label>
-                    <input name="audio" value={form.audio} onChange={handleChange} className="form-control" type="number" />
+                    <input name="audio" value={form.audio} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Conector Carga</label>
-                    <input name="conector_carga" value={form.conector_carga} onChange={handleChange} className="form-control" type="number" />
+                    <input name="conector_carga" value={form.conector_carga} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Lector Huella</label>
-                    <input name="lector_huella" value={form.lector_huella} onChange={handleChange} className="form-control" type="number" />
+                    <input name="lector_huella" value={form.lector_huella} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Auricular</label>
-                    <input name="auricular" value={form.auricular} onChange={handleChange} className="form-control" type="number" />
+                    <input name="auricular" value={form.auricular} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Parlante</label>
-                    <input name="parlante" value={form.parlante} onChange={handleChange} className="form-control" type="number" />
+                    <input name="parlante" value={form.parlante} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Logic Carga</label>
-                    <input name="logic_carga" value={form.logic_carga} onChange={handleChange} className="form-control" type="number" />
+                    <input name="logic_carga" value={form.logic_carga} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Home</label>
-                    <input name="home" value={form.home} onChange={handleChange} className="form-control" type="number" />
+                    <input name="home" value={form.home} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Delantera Visor</label>
-                    <input name="delantera_visor" value={form.delantera_visor} onChange={handleChange} className="form-control" type="number" />
+                    <input name="delantera_visor" value={form.delantera_visor} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Trasera Visor</label>
-                    <input name="trasera_visor" value={form.trasera_visor} onChange={handleChange} className="form-control" type="number" />
+                    <input name="trasera_visor" value={form.trasera_visor} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Antena</label>
-                    <input name="antena" value={form.antena} onChange={handleChange} className="form-control" type="number" />
+                    <input name="antena" value={form.antena} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Porta SIM</label>
-                    <input name="porta_sim" value={form.porta_sim} onChange={handleChange} className="form-control" type="number" />
+                    <input name="porta_sim" value={form.porta_sim} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Botón Lateral</label>
-                    <input name="boton_lateral" value={form.boton_lateral} onChange={handleChange} className="form-control" type="number" />
+                    <input name="boton_lateral" value={form.boton_lateral} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                 </div>
                 <div className="modal-footer">

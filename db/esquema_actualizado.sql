@@ -4,18 +4,24 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
--- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
--- -----------------------------------------------------
--- Schema inventario
--- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema inventario
+-- Table `inventario`.`users`
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `inventario` DEFAULT CHARACTER SET utf8mb4 ;
-USE `inventario` ;
+CREATE TABLE IF NOT EXISTS `inventario`.`users` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(50) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `rol` ENUM('admin', 'encargado') NOT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP(),
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `nombre` (`nombre` ASC) VISIBLE
+)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+
 
 -- -----------------------------------------------------
 -- Table `inventario`.`marcas`
@@ -23,10 +29,16 @@ USE `inventario` ;
 CREATE TABLE IF NOT EXISTS `inventario`.`marcas` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(50) NOT NULL,
+  `proveedor_id` INT(11) NULL DEFAULT NULL,
   `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP(),
   `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `nombre` (`nombre` ASC) VISIBLE)
+  UNIQUE INDEX `nombre` (`nombre` ASC) VISIBLE,
+  INDEX `proveedor_id` (`proveedor_id` ASC) VISIBLE,
+  CONSTRAINT `marcas_ibfk_1`
+    FOREIGN KEY (`proveedor_id`)
+    REFERENCES `inventario`.`proveedor` (`id`)
+)
 ENGINE = InnoDB
 AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8mb4;

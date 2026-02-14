@@ -103,7 +103,7 @@ const InvDiaVisoresTable: React.FC = () => {
         <h5 className="mb-0 fw-bold">Inventario Visores</h5>
         <button className="btn btn-primary btn-sm" onClick={() => { setShowModal(true); setEditId(null); setForm(emptyForm); }}>Nuevo</button>
       </div>
-      <div className="table-responsive">
+      <div className="table-responsive" style={{overflowX: 'auto'}}>
         <table className="table table-hover align-middle mb-0">
           <thead className="table-light">
             <tr className="small text-uppercase text-muted">
@@ -145,7 +145,9 @@ const InvDiaVisoresTable: React.FC = () => {
                 <td>{item.ser_t}</td>
                 <td>{item.dev}</td>
                 <td>{item.t_inv_final}</td>
-                <td>{item.cost}</td>
+                <td>{
+                  new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 2 }).format(Number(item.cost) || 0)
+                }</td>
                 <td>{item.vxm}</td>
                 <td>{item.rebaja}</td>
                 <td>{item.pedir ? 'Sí' : 'No'}</td>
@@ -207,35 +209,38 @@ const InvDiaVisoresTable: React.FC = () => {
                   </div>
                   <div className="col-6">
                     <label className="form-label">Inventario Inicial</label>
-                    <input name="inventario_inicial" value={form.inventario_inicial} onChange={handleChange} className="form-control" type="number" />
+                    <input name="inventario_inicial" value={form.inventario_inicial} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Compra</label>
-                    <input name="comp" value={form.comp} onChange={handleChange} className="form-control" type="number" />
+                    <input name="comp" value={form.comp} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Transferencia Ext.</label>
-                    <input name="t_ext" value={form.t_ext} onChange={handleChange} className="form-control" type="number" />
+                    <input name="t_ext" value={form.t_ext} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Venta</label>
-                    <input name="vta" value={form.vta} onChange={handleChange} className="form-control" type="number" />
+                    <input name="vta" value={form.vta} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Servicio Técnico</label>
-                    <input name="ser_t" value={form.ser_t} onChange={handleChange} className="form-control" type="number" />
+                    <input name="ser_t" value={form.ser_t} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Devolución</label>
-                    <input name="dev" value={form.dev} onChange={handleChange} className="form-control" type="number" />
+                    <input name="dev" value={form.dev} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Inventario Final</label>
-                    <input name="t_inv_final" value={form.t_inv_final} onChange={handleChange} className="form-control" type="number" />
+                    <input name="t_inv_final" value={form.t_inv_final} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Costo</label>
-                    <input name="cost" value={form.cost} onChange={handleChange} className="form-control" type="number" step="0.01" />
+                    <div className="input-group">
+                      <span className="input-group-text">$</span>
+                      <input name="cost" value={form.cost} onChange={handleChange} className="form-control" type="number" step="0.01" />
+                    </div>
                   </div>
                   <div className="col-6">
                     <label className="form-label">VXM</label>

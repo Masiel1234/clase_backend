@@ -20,10 +20,13 @@ ECHO Montando base de datos...
 mysql --defaults-extra-file="%MYSQL_CONFIG_FILE%" < "%DBFILE%"
 ECHO Base de datos montada.
 
+
 REM Ejecutar migraciones de Laravel
 ECHO Ejecutando migraciones de Laravel...
 cd sistemaInforme
 php artisan migrate
+ECHO Ejecutando seeders de Laravel...
+php artisan db:seed --force
 cd ..
 
 REM Eliminar el archivo de configuración temporal

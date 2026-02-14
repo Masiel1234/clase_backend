@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useAuth } from '../../auth/AuthContext';
 import { tapaBackAPI, proveedorAPI, marcaAPI } from '../../apis/api';
 
 interface Proveedor {
@@ -39,15 +40,15 @@ const emptyForm: Omit<InvDiaTapaBack, 'id'> = {
   fecha: '',
   codigo: '',
   proveedor_id: 0,
-  inventario_inicial: 0,
-  comp: 0,
-  t_ext: 0,
-  vta: 0,
-  ser_t: 0,
-  devolucion: 0,
-  t_inv_final: 0,
-  vxm: 0,
-  rebaja: 0,
+  inventario_inicial: 1,
+  comp: 1,
+  t_ext: 1,
+  vta: 1,
+  ser_t: 1,
+  devolucion: 1,
+  t_inv_final: 1,
+  vxm: 1,
+  rebaja: 1,
   pedir: false,
   falta: false,
   celular: '',
@@ -106,13 +107,16 @@ const InvDiaTapaBackTable: React.FC = () => {
     setShowModal(true);
   };
 
+  const { user } = useAuth();
   return (
     <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
       <div className="card-header bg-white p-3 d-flex justify-content-between align-items-center">
         <h5 className="mb-0 fw-bold">Inventario Tapa Back</h5>
-        <button className="btn btn-primary btn-sm" onClick={() => { setShowModal(true); setEditId(null); setForm(emptyForm); }}>Nuevo</button>
+        {user?.rol === 'admin' && (
+          <button className="btn btn-primary btn-sm" onClick={() => { setShowModal(true); setEditId(null); setForm(emptyForm); }}>Nuevo</button>
+        )}
       </div>
-      <div className="table-responsive">
+      <div className="table-responsive" style={{overflowX: 'auto'}}>
         <table className="table table-hover align-middle mb-0">
           <thead className="table-light">
             <tr className="small text-uppercase text-muted">
@@ -144,7 +148,9 @@ const InvDiaTapaBackTable: React.FC = () => {
                 <td>{item.codigo}</td>
                 <td>{proveedores.find(p => p.id === item.proveedor_id)?.nombre || 'Sin proveedor'}</td>
                 <td>{item.inventario_inicial}</td>
-                <td>{item.comp}</td>
+                <td>{
+                  new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 2 }).format(Number(item.comp) || 0)
+                }</td>
                 <td>{item.t_ext}</td>
                 <td>{item.vta}</td>
                 <td>{item.ser_t}</td>
@@ -157,7 +163,9 @@ const InvDiaTapaBackTable: React.FC = () => {
                 <td>{item.celular}</td>
                 <td>{item.nota}</td>
                 <td>
-                  <button className="btn btn-warning btn-sm" onClick={() => handleEdit(item)}>Editar</button>
+                  {user?.rol === 'admin' && (
+                    <button className="btn btn-warning btn-sm" onClick={() => handleEdit(item)}>Editar</button>
+                  )}
                 </td>
               </tr>
             ))}
@@ -209,31 +217,34 @@ const InvDiaTapaBackTable: React.FC = () => {
                   </div>
                   <div className="col-6">
                     <label className="form-label">Inventario Inicial</label>
-                    <input name="inventario_inicial" value={form.inventario_inicial} onChange={handleChange} className="form-control" type="number" />
+                    <input name="inventario_inicial" value={form.inventario_inicial} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Compra</label>
-                    <input name="comp" value={form.comp} onChange={handleChange} className="form-control" type="number" />
+                    <div className="input-group">
+                      <span className="input-group-text">$</span>
+                      <input name="comp" value={form.comp} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
+                    </div>
                   </div>
                   <div className="col-6">
                     <label className="form-label">Transferencia Ext.</label>
-                    <input name="t_ext" value={form.t_ext} onChange={handleChange} className="form-control" type="number" />
+                    <input name="t_ext" value={form.t_ext} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Venta</label>
-                    <input name="vta" value={form.vta} onChange={handleChange} className="form-control" type="number" />
+                    <input name="vta" value={form.vta} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Servicio Técnico</label>
-                    <input name="ser_t" value={form.ser_t} onChange={handleChange} className="form-control" type="number" />
+                    <input name="ser_t" value={form.ser_t} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Devolución</label>
-                    <input name="devolucion" value={form.devolucion} onChange={handleChange} className="form-control" type="number" />
+                    <input name="devolucion" value={form.devolucion} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Inventario Final</label>
-                    <input name="t_inv_final" value={form.t_inv_final} onChange={handleChange} className="form-control" type="number" />
+                    <input name="t_inv_final" value={form.t_inv_final} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">VXM</label>

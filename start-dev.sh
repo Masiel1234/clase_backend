@@ -7,17 +7,32 @@ BACKEND_PATH="$ROOT_DIR/sistemaInforme"
 FRONTEND_PATH="$ROOT_DIR/sistemaInforme-frontend"
 DB_PATH="$ROOT_DIR/db/esquema_actualizada.sql"
 
-SETUP_SCRIPT="$ROOT_DIR/start-dev-setup.sh"
-if [ -x "$SETUP_SCRIPT" ]; then
-    "$SETUP_SCRIPT"
-else
-    echo "No se encontró start-dev-setup.sh o no tiene permisos de ejecución."
-    echo "Ejecuta: chmod +x $SETUP_SCRIPT"
-    exit 1
-fi
+
+# Borrar y crear base de datos limpia
+echo "Eliminando base de datos inventario si existe..."
+mysql -u root --password='' -e "DROP DATABASE IF EXISTS inventario;"
+echo "Creando base de datos inventario..."
+mysql -u root --password='' -e "CREATE DATABASE inventario CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
+
+echo "Ejecutando migraciones de Laravel..."
+cd "$BACKEND_PATH"
+php artisan migrate --force
+echo "Migraciones ejecutadas."
+
+echo "Ejecutando seeders de Laravel..."
+php artisan db:seed --force
+echo "Seeders ejecutados."
+
+cd "$ROOT_DIR"
+
+
+echo "Ejecutando migraciones de Laravel..."
+cd "$BACKEND_PATH"
+php artisan migrate --force
+echo "Migraciones ejecutadas."
 
 echo "Iniciando backend..."
-cd "$BACKEND_PATH"
 php artisan serve &
 echo "Backend iniciado en background."
 

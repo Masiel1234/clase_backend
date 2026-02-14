@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useAuth } from '../../auth/AuthContext';
 import { batGenericaAPI, proveedorAPI, marcaAPI } from '../../apis/api';
 
 interface Proveedor {
@@ -40,14 +41,14 @@ const emptyForm: Omit<InvDiaBatGenerica, 'id'> = {
   fecha: '',
   codigo: '',
   proveedor_id: 0,
-  cantidad: 0,
-  costo: 0,
-  v_mayor: 0,
-  rebaja: 0,
+  cantidad: 1,
+  costo: 1,
+  v_mayor: 1,
+  rebaja: 1,
   pedir: false,
-  faltantes: 0,
+  faltantes: 1,
   celulares: '',
-  devolucion: 0,
+  devolucion: 1,
 };
 
 const InvDiaBatGenericaTable: React.FC = () => {
@@ -102,13 +103,16 @@ const InvDiaBatGenericaTable: React.FC = () => {
     setShowModal(true);
   };
 
+  const { user } = useAuth();
   return (
     <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
       <div className="card-header bg-white p-3 d-flex justify-content-between align-items-center">
         <h5 className="mb-0 fw-bold">Inventario Batería Genérica</h5>
-        <button className="btn btn-primary btn-sm" onClick={() => { setShowModal(true); setEditId(null); setForm(emptyForm); }}>Nuevo</button>
+        {user?.rol === 'admin' && (
+          <button className="btn btn-primary btn-sm" onClick={() => { setShowModal(true); setEditId(null); setForm(emptyForm); }}>Nuevo</button>
+        )}
       </div>
-      <div className="table-responsive">
+      <div className="table-responsive" style={{overflowX: 'auto'}}>
         <table className="table table-hover align-middle mb-0">
           <thead className="table-light">
             <tr className="small text-uppercase text-muted">
@@ -151,7 +155,9 @@ const InvDiaBatGenericaTable: React.FC = () => {
                 <td>{item.celulares}</td>
                 <td>{item.devolucion}</td>
                 <td>
-                  <button className="btn btn-warning btn-sm" onClick={() => handleEdit(item)}>Editar</button>
+                  {user?.rol === 'admin' && (
+                    <button className="btn btn-warning btn-sm" onClick={() => handleEdit(item)}>Editar</button>
+                  )}
                 </td>
               </tr>
             ))}
@@ -215,7 +221,7 @@ const InvDiaBatGenericaTable: React.FC = () => {
                   </div>
                   <div className="col-6">
                     <label className="form-label">Cantidad</label>
-                    <input name="cantidad" value={form.cantidad} onChange={handleChange} className="form-control" type="number" required />
+                    <input name="cantidad" value={form.cantidad} onChange={handleChange} className="form-control" type="number" min={1} step={1} required />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Costo</label>
@@ -235,7 +241,7 @@ const InvDiaBatGenericaTable: React.FC = () => {
                   </div>
                   <div className="col-6">
                     <label className="form-label">Faltantes</label>
-                    <input name="faltantes" value={form.faltantes} onChange={handleChange} className="form-control" type="number" />
+                    <input name="faltantes" value={form.faltantes} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                   <div className="col-6">
                     <label className="form-label">Celulares</label>
@@ -243,7 +249,7 @@ const InvDiaBatGenericaTable: React.FC = () => {
                   </div>
                   <div className="col-6">
                     <label className="form-label">Devolución</label>
-                    <input name="devolucion" value={form.devolucion} onChange={handleChange} className="form-control" type="number" />
+                    <input name="devolucion" value={form.devolucion} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
                 </div>
                 <div className="modal-footer">
