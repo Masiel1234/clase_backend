@@ -5,7 +5,7 @@
 ROOT_DIR="$(dirname "$(realpath "$0")")"
 BACKEND_PATH="$ROOT_DIR/sistemaInforme"
 FRONTEND_PATH="$ROOT_DIR/sistemaInforme-frontend"
-DB_PATH="$ROOT_DIR/db/esquema.sql"
+DB_PATH="$ROOT_DIR/db/esquema_actualizada.sql"
 
 SETUP_SCRIPT="$ROOT_DIR/start-dev-setup.sh"
 if [ -x "$SETUP_SCRIPT" ]; then
