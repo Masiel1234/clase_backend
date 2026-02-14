@@ -1,8 +1,15 @@
 import React from 'react';
 import { Plus, MoreVertical } from 'lucide-react';
 
+interface Celular {
+  referencia: string;
+  costo: number;
+  software: string;
+  fecha: string;
+}
+
 interface InventoryTableProps {
-  data: Array<{ id: number; referencia: string; costo: number; software: string; display: string; }>
+  data: Celular[];
 }
 
 const InventoryTable: React.FC<InventoryTableProps> = ({ data }) => (
@@ -23,13 +30,25 @@ const InventoryTable: React.FC<InventoryTableProps> = ({ data }) => (
           </tr>
         </thead>
         <tbody>
-          {data.map(c => (
-            <tr key={c.id}>
-              <td className="px-4 fw-bold">{c.referencia}</td>
-              <td className="text-secondary">${c.costo}</td>
-              <td><span className="badge bg-primary-subtle text-primary rounded-pill">{c.software}</span></td>
+          {data && data.length > 0 ? (
+            data.map((c, index) => (
+              <tr key={index}>
+                <td className="px-4 fw-bold">{c.referencia || '-'}</td>
+                <td className="text-secondary">${c.costo || 0}</td>
+                <td>
+                  <span className="badge bg-primary-subtle text-primary rounded-pill">
+                    {c.software || 'N/A'}
+                  </span>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={3} className="text-center text-muted py-4">
+                No hay registros de inventario diario
+              </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>

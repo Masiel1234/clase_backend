@@ -88,37 +88,40 @@ class DashBoardController extends Controller
         $stockBajo = [];
 
         // Baterías Genéricas
-        $batGenericas = InvDiaBatGenerica::where('cantidad', '<=', 5)
+        $batGenericas = InvDiaBatGenerica::with('marca')
+            ->where('cantidad', '<=', 5)
             ->orderBy('cantidad')
             ->limit(5)
             ->get()
             ->map(fn($item) => [
                 'tipo' => 'Batería Genérica',
-                'referencia' => $item->version ?? 'Sin versión',
+                'referencia' => ($item->marca ? $item->marca->nombre . ' - ' : '') . ($item->version ?? 'Sin versión'),
                 'stock' => $item->cantidad,
                 'marca_id' => $item->id_marca_fk,
             ]);
 
         // Displays
-        $displays = InvDiaDisplay::where('t_inv_final', '<=', 5)
+        $displays = InvDiaDisplay::with('marca')
+            ->where('t_inv_final', '<=', 5)
             ->orderBy('t_inv_final')
             ->limit(5)
             ->get()
             ->map(fn($item) => [
                 'tipo' => 'Display',
-                'referencia' => $item->version ?? 'Sin versión',
+                'referencia' => ($item->marca ? $item->marca->nombre . ' - ' : '') . ($item->version ?? 'Sin versión'),
                 'stock' => $item->t_inv_final,
                 'marca_id' => $item->id_marca_fk,
             ]);
 
         // Táctiles
-        $tactiles = InvDiaTactil::where('cantidad', '<=', 5)
+        $tactiles = InvDiaTactil::with('marca')
+            ->where('cantidad', '<=', 5)
             ->orderBy('cantidad')
             ->limit(5)
             ->get()
             ->map(fn($item) => [
                 'tipo' => 'Táctil',
-                'referencia' => $item->version ?? 'Sin versión',
+                'referencia' => ($item->marca ? $item->marca->nombre . ' - ' : '') . ($item->version ?? 'Sin versión'),
                 'stock' => $item->cantidad,
                 'marca_id' => $item->id_marca_fk,
             ]);
@@ -141,42 +144,45 @@ class DashBoardController extends Controller
         $marcas = [];
 
         // Baterías Genéricas
-        $batGenericas = InvDiaBatGenerica::select('id_marca_fk', DB::raw('SUM(cantidad) as total'))
+        $batGenericas = InvDiaBatGenerica::with('marca')
+            ->select('id_marca_fk', DB::raw('SUM(cantidad) as total'))
             ->groupBy('id_marca_fk')
             ->get();
 
         foreach ($batGenericas as $item) {
-            $marcaId = $item->id_marca_fk ?? 'Sin marca';
-            if (!isset($marcas[$marcaId])) {
-                $marcas[$marcaId] = 0;
+            $marcaNombre = $item->marca ? $item->marca->nombre : 'Sin marca';
+            if (!isset($marcas[$marcaNombre])) {
+                $marcas[$marcaNombre] = 0;
             }
-            $marcas[$marcaId] += $item->total;
+            $marcas[$marcaNombre] += $item->total;
         }
 
         // Displays
-        $displays = InvDiaDisplay::select('id_marca_fk', DB::raw('SUM(t_inv_final) as total'))
+        $displays = InvDiaDisplay::with('marca')
+            ->select('id_marca_fk', DB::raw('SUM(t_inv_final) as total'))
             ->groupBy('id_marca_fk')
             ->get();
 
         foreach ($displays as $item) {
-            $marcaId = $item->id_marca_fk ?? 'Sin marca';
-            if (!isset($marcas[$marcaId])) {
-                $marcas[$marcaId] = 0;
+            $marcaNombre = $item->marca ? $item->marca->nombre : 'Sin marca';
+            if (!isset($marcas[$marcaNombre])) {
+                $marcas[$marcaNombre] = 0;
             }
-            $marcas[$marcaId] += $item->total;
+            $marcas[$marcaNombre] += $item->total;
         }
 
         // Táctiles
-        $tactiles = InvDiaTactil::select('id_marca_fk', DB::raw('SUM(cantidad) as total'))
+        $tactiles = InvDiaTactil::with('marca')
+            ->select('id_marca_fk', DB::raw('SUM(cantidad) as total'))
             ->groupBy('id_marca_fk')
             ->get();
 
         foreach ($tactiles as $item) {
-            $marcaId = $item->id_marca_fk ?? 'Sin marca';
-            if (!isset($marcas[$marcaId])) {
-                $marcas[$marcaId] = 0;
+            $marcaNombre = $item->marca ? $item->marca->nombre : 'Sin marca';
+            if (!isset($marcas[$marcaNombre])) {
+                $marcas[$marcaNombre] = 0;
             }
-            $marcas[$marcaId] += $item->total;
+            $marcas[$marcaNombre] += $item->total;
         }
 
         // Convertir a formato de gráfica
@@ -185,8 +191,8 @@ class DashBoardController extends Controller
         $datos = [];
         $porcentajes = [];
 
-        foreach ($marcas as $marcaId => $cantidad) {
-            $labels[] = $marcaId;
+        foreach ($marcas as $marcaNombre => $cantidad) {
+            $labels[] = $marcaNombre;
             $datos[] = $cantidad;
             $porcentajes[] = $total > 0 ? round(($cantidad / $total) * 100, 2) : 0;
         }

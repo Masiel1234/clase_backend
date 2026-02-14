@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { marcaAPI } from '../apis/api';
 
 interface Marca {
   id: number;
@@ -21,7 +21,7 @@ const MarcaTable: React.FC = () => {
   const [editId, setEditId] = useState<number|null>(null);
 
   useEffect(() => {
-    axios.get('/api/catalogos/marcas')
+    marcaAPI.getAll()
       .then(res => Array.isArray(res.data) ? setData(res.data) : setData([]))
       .catch(() => setData([]));
   }, []);
@@ -37,14 +37,14 @@ const MarcaTable: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editId) {
-      await axios.put(`/api/catalogos/marcas/${editId}`, form);
+      await marcaAPI.update(editId, form);
     } else {
-      await axios.post('/api/catalogos/marcas', form);
+      await marcaAPI.create(form);
     }
     setShowModal(false);
     setEditId(null);
     setForm(emptyForm);
-    axios.get('/api/catalogos/marcas').then(res => Array.isArray(res.data) ? setData(res.data) : setData([]));
+    marcaAPI.getAll().then(res => Array.isArray(res.data) ? setData(res.data) : setData([]));
   };
 
   const handleEdit = (item: Marca) => {
@@ -54,8 +54,8 @@ const MarcaTable: React.FC = () => {
   };
 
   const handleDeactivate = async (id: number) => {
-    await axios.patch(`/api/catalogos/marcas/${id}/deactivate`);
-    axios.get('/api/catalogos/marcas').then(res => Array.isArray(res.data) ? setData(res.data) : setData([]));
+    await marcaAPI.deactivate(id);
+    marcaAPI.getAll().then(res => Array.isArray(res.data) ? setData(res.data) : setData([]));
   };
 
   return (

@@ -3,6 +3,7 @@
 namespace App\Domains\Inventario\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Domains\Marca\Models\Marca;
 
 class InvDiaRptosPeq extends Model
 {
@@ -30,4 +31,10 @@ class InvDiaRptosPeq extends Model
         'porta_sim',
         'boton_lateral',
     ];
+
+    // Relaciones
+    public function marca()
+    {
+        return $this->belongsTo(Marca::class, 'id_marca_fk');
+    }
 }

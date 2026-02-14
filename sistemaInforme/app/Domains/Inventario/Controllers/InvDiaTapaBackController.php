@@ -12,7 +12,7 @@ class InvDiaTapaBackController extends Controller
     public function index()
     {
         return response()->json(
-            InvDiaTapaBack::query()->orderByDesc('id')->get()
+            InvDiaTapaBack::with(['marca', 'proveedor'])->orderByDesc('id')->get()
         );
     }
 

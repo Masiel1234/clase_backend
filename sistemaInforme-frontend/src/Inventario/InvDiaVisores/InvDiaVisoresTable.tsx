@@ -1,9 +1,10 @@
+import React, { useEffect, useState } from 'react';
+import { visoresAPI, proveedorAPI } from '../../apis/api';
+
 interface Proveedor {
   id: number;
   nombre: string;
 }
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 
 interface InvDiaVisores {
   id: number;
@@ -57,13 +58,13 @@ const InvDiaVisoresTable: React.FC = () => {
   const [form, setForm] = useState(emptyForm);
   const [editId, setEditId] = useState<number|null>(null);
   useEffect(() => {
-    axios.get('/api/proveedor')
+    proveedorAPI.getAll()
       .then(res => Array.isArray(res.data) ? setProveedores(res.data) : setProveedores([]))
       .catch(() => setProveedores([]));
   }, []);
 
   useEffect(() => {
-    axios.get('/api/inventario/inv-dia-visores')
+    visoresAPI.getAll()
       .then(res => Array.isArray(res.data) ? setData(res.data) : setData([]))
       .catch(() => setData([]));
   }, []);
@@ -80,14 +81,14 @@ const InvDiaVisoresTable: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editId) {
-      await axios.put(`/api/inventario/inv-dia-visores/${editId}`, form);
+      await visoresAPI.update(editId, form);
     } else {
-      await axios.post('/api/inventario/inv-dia-visores', form);
+      await visoresAPI.create(form);
     }
     setShowModal(false);
     setEditId(null);
     setForm(emptyForm);
-    axios.get('/api/inventario/inv-dia-visores').then(res => Array.isArray(res.data) ? setData(res.data) : setData([]));
+    visoresAPI.getAll().then(res => Array.isArray(res.data) ? setData(res.data) : setData([]));
   };
 
   const handleEdit = (item: InvDiaVisores) => {

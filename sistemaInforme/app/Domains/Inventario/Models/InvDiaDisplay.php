@@ -3,6 +3,8 @@
 namespace App\Domains\Inventario\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Domains\Marca\Models\Marca;
+use App\Domains\Proveedor\Models\Proveedor;
 
 class InvDiaDisplay extends Model
 {
@@ -30,4 +32,15 @@ class InvDiaDisplay extends Model
         'celular',
         'nota',
     ];
+
+    // Relaciones
+    public function marca()
+    {
+        return $this->belongsTo(Marca::class, 'id_marca_fk');
+    }
+
+    public function proveedor()
+    {
+        return $this->belongsTo(Proveedor::class, 'proveedor_id');
+    }
 }

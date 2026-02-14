@@ -11,7 +11,7 @@ class InvDiaTactilController extends Controller
     public function index()
     {
         return response()->json(
-            InvDiaTactil::query()->orderByDesc('id')->get()
+            InvDiaTactil::with(['marca', 'proveedor'])->orderByDesc('id')->get()
         );
     }
 

@@ -12,7 +12,7 @@ class InvDiaBatOriginalController extends Controller
     public function index()
     {
         return response()->json(
-            InvDiaBatOriginal::query()->orderByDesc('id')->get()
+            InvDiaBatOriginal::with(['marca', 'proveedor'])->orderByDesc('id')->get()
         );
     }
 

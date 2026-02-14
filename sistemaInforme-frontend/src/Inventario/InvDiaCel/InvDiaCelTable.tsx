@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { celularesAPI } from '../../apis/api';
 
 interface InvDiaCel {
   id: number;
@@ -57,7 +57,7 @@ const InvDiaCelTable: React.FC = () => {
   const [editId, setEditId] = useState<number|null>(null);
 
   useEffect(() => {
-    axios.get('/api/inventario/inv-dia-cel')
+    celularesAPI.getAll()
       .then(res => Array.isArray(res.data) ? setData(res.data) : setData([]))
       .catch(() => setData([]));
   }, []);
@@ -74,14 +74,14 @@ const InvDiaCelTable: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editId) {
-      await axios.put(`/api/inventario/inv-dia-cel/${editId}`, form);
+      await celularesAPI.update(editId, form);
     } else {
-      await axios.post('/api/inventario/inv-dia-cel', form);
+      await celularesAPI.create(form);
     }
     setShowModal(false);
     setEditId(null);
     setForm(emptyForm);
-    axios.get('/api/inventario/inv-dia-cel').then(res => Array.isArray(res.data) ? setData(res.data) : setData([]));
+    celularesAPI.getAll().then(res => Array.isArray(res.data) ? setData(res.data) : setData([]));
   };
 
   const handleEdit = (item: InvDiaCel) => {

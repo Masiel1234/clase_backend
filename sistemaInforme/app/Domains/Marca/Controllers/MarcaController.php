@@ -30,5 +30,12 @@ class MarcaController extends Controller
         $item->update($data);
         return response()->json($item);
     }
+
+    public function deactivate($id)
+    {
+        $item = Marca::findOrFail($id);
+        $item->update(['activo' => false]);
+        return response()->json($item);
+    }
     
 }

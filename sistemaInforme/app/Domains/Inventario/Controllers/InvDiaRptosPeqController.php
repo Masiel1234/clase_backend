@@ -12,7 +12,7 @@ class InvDiaRptosPeqController extends Controller
     public function index()
     {
         return response()->json(
-            InvDiaRptosPeq::query()->orderByDesc('id')->get()
+            InvDiaRptosPeq::with(['marca'])->orderByDesc('id')->get()
         );
     }
 

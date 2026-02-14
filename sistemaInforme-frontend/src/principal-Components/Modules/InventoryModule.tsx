@@ -2,10 +2,23 @@
 import InventoryTable from '../../Dashboard/Components/Tables/InventoryTable';
 import StockAlertTable from '../../Dashboard/Components/Tables/StockAlertTable';
 
-// Puedes agregar lógica de rutas o tabs si lo deseas
+interface Celular {
+  referencia: string;
+  costo: number;
+  software: string;
+  fecha: string;
+}
+
+interface StockBajo {
+  tipo: string;
+  referencia: string;
+  stock: number;
+  marca_id?: number;
+}
+
 const InventoryModule = ({ celulares, stockBajo }: {
-  celulares: Array<{ id: number; referencia: string; costo: number; software: string; display: string; }>,
-  stockBajo: Array<{ id: number; referencia: string; stock: number; }>
+  celulares: Celular[],
+  stockBajo: StockBajo[]
 }) => (
   <>
     <InventoryTable data={celulares} />

@@ -30,6 +30,12 @@ class ProveedorController extends Controller
         return response()->json($item);
     }
 
+    public function deactivate($id)
+    {
+        $item = Proveedor::findOrFail($id);
+        $item->update(['activo' => false]);
+        return response()->json($item);
+    }
 
 
 

@@ -12,7 +12,7 @@ class InvDiaDisplayController extends Controller
     public function index()
     {
         return response()->json(
-            InvDiaDisplay::query()->orderByDesc('id')->get()
+            InvDiaDisplay::with(['marca', 'proveedor'])->orderByDesc('id')->get()
         );
     }
 

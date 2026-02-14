@@ -11,7 +11,7 @@ class InvDiaBatGenericaController extends Controller
     public function index()
     {
         return response()->json(
-            InvDiaBatGenerica::query()->orderByDesc('id')->get()
+            InvDiaBatGenerica::with(['marca', 'proveedor'])->orderByDesc('id')->get()
         );
     }
 

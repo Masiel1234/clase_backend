@@ -1,8 +1,15 @@
 import React from 'react';
 import { Download } from 'lucide-react';
 
+interface StockBajo {
+  tipo: string;
+  referencia: string;
+  stock: number;
+  marca_id?: number;
+}
+
 interface StockAlertTableProps {
-  data: Array<{ id: number; referencia: string; stock: number; }>
+  data: StockBajo[];
 }
 
 const StockAlertTable: React.FC<StockAlertTableProps> = ({ data }) => (
@@ -17,18 +24,29 @@ const StockAlertTable: React.FC<StockAlertTableProps> = ({ data }) => (
       <table className="table table-hover align-middle mb-0">
         <thead className="table-danger">
           <tr className="small text-uppercase text-danger">
-            <th className="px-4">Referencia</th>
+            <th className="px-4">Tipo</th>
+            <th>Referencia</th>
             <th>Stock</th>
-            <th className="text-center">Acción</th>
           </tr>
         </thead>
         <tbody>
-          {data.map(item => (
-            <tr key={item.id}>
-              <td className="px-4 fw-bold">{item.referencia}</td>
-              <td className="text-danger fw-bold">{item.stock}</td>
+          {data && data.length > 0 ? (
+            data.map((item, index) => (
+              <tr key={index}>
+                <td className="px-4">
+                  <span className="badge bg-warning-subtle text-warning">{item.tipo}</span>
+                </td>
+                <td className="fw-bold">{item.referencia}</td>
+                <td className="text-danger fw-bold">{item.stock}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={3} className="text-center text-muted py-4">
+                No hay productos con stock bajo
+              </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>

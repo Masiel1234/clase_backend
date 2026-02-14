@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { batGenericaAPI, proveedorAPI, marcaAPI } from '../../apis/api';
 
 interface Proveedor {
+  id: number;
+  nombre: string;
+}
+
+interface Marca {
   id: number;
   nombre: string;
 }
@@ -23,6 +28,8 @@ interface InvDiaBatGenerica {
   faltantes: number;
   celulares: string;
   devolucion: number;
+  marca?: Marca; // Relación opcional del backend
+  proveedor?: Proveedor; // Relación opcional del backend
 }
 
 const emptyForm: Omit<InvDiaBatGenerica, 'id'> = {
@@ -46,17 +53,23 @@ const emptyForm: Omit<InvDiaBatGenerica, 'id'> = {
 const InvDiaBatGenericaTable: React.FC = () => {
   const [data, setData] = useState<InvDiaBatGenerica[]>([]);
   const [proveedores, setProveedores] = useState<Proveedor[]>([]);
+  const [marcas, setMarcas] = useState<Marca[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState(emptyForm);
   const [editId, setEditId] = useState<number|null>(null);
+  
   useEffect(() => {
-    axios.get('/api/proveedor')
+    proveedorAPI.getAll()
       .then(res => Array.isArray(res.data) ? setProveedores(res.data) : setProveedores([]))
       .catch(() => setProveedores([]));
+    
+    marcaAPI.getAll()
+      .then(res => Array.isArray(res.data) ? setMarcas(res.data) : setMarcas([]))
+      .catch(() => setMarcas([]));
   }, []);
 
   useEffect(() => {
-    axios.get('/api/inventario/inv-dia-bat-generica')
+    batGenericaAPI.getAll()
       .then(res => Array.isArray(res.data) ? setData(res.data) : setData([]))
       .catch(() => setData([]));
   }, []);
@@ -73,14 +86,14 @@ const InvDiaBatGenericaTable: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editId) {
-      await axios.put(`/api/inventario/inv-dia-bat-generica/${editId}`, form);
+      await batGenericaAPI.update(editId, form);
     } else {
-      await axios.post('/api/inventario/inv-dia-bat-generica', form);
+      await batGenericaAPI.create(form);
     }
     setShowModal(false);
     setEditId(null);
     setForm(emptyForm);
-    axios.get('/api/inventario/inv-dia-bat-generica').then(res => setData(res.data));
+    batGenericaAPI.getAll().then(res => setData(res.data));
   };
 
   const handleEdit = (item: InvDiaBatGenerica) => {
@@ -99,7 +112,7 @@ const InvDiaBatGenericaTable: React.FC = () => {
         <table className="table table-hover align-middle mb-0">
           <thead className="table-light">
             <tr className="small text-uppercase text-muted">
-              {/* <th className="px-4">ID Marca</th> */}
+              <th>Marca</th>
               <th>Versión</th>
               <th>Color</th>
               <th>Calidad</th>
@@ -120,7 +133,7 @@ const InvDiaBatGenericaTable: React.FC = () => {
           <tbody>
             {(Array.isArray(data) ? data : []).map(item => (
               <tr key={item.id}>
-                {/* <td className="px-4 fw-bold">{item.id_marca_fk}</td> */}
+                <td>{item.marca?.nombre || '-'}</td>
                 <td>{item.version}</td>
                 <td>{item.color}</td>
                 <td>{item.calidad}</td>
@@ -156,12 +169,15 @@ const InvDiaBatGenericaTable: React.FC = () => {
               <form onSubmit={handleSubmit}>
                 <div className="modal-body row g-2">
                   {/* Campos del formulario */}
-                  {/*
                   <div className="col-6">
-                    <label className="form-label">ID Marca</label>
-                    <input name="id_marca_fk" value={form.id_marca_fk} onChange={handleChange} className="form-control" type="number" required />
+                    <label className="form-label">Marca</label>
+                    <select name="id_marca_fk" value={form.id_marca_fk} onChange={handleChange} className="form-control">
+                      <option value={0}>Sin marca</option>
+                      {marcas.map(marca => (
+                        <option key={marca.id} value={marca.id}>{marca.nombre}</option>
+                      ))}
+                    </select>
                   </div>
-                  */}
                   <div className="col-6">
                     <label className="form-label">Versión</label>
                     <input name="version" value={form.version} onChange={handleChange} className="form-control" required />

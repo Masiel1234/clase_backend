@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { proveedorAPI } from '../apis/api';
 
 interface Proveedor {
   id: number;
@@ -21,7 +21,7 @@ const ProveedorTable: React.FC = () => {
   const [editId, setEditId] = useState<number|null>(null);
 
   useEffect(() => {
-    axios.get('/api/catalogos/proveedor')
+    proveedorAPI.getAll()
       .then(res => Array.isArray(res.data) ? setData(res.data) : setData([]))
       .catch(() => setData([]));
   }, []);
@@ -37,14 +37,14 @@ const ProveedorTable: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editId) {
-      await axios.put(`/api/catalogos/proveedor/${editId}`, form);
+      await proveedorAPI.update(editId, form);
     } else {
-      await axios.post('/api/catalogos/proveedor', form);
+      await proveedorAPI.create(form);
     }
     setShowModal(false);
     setEditId(null);
     setForm(emptyForm);
-    axios.get('/api/catalogos/proveedor').then(res => Array.isArray(res.data) ? setData(res.data) : setData([]));
+    proveedorAPI.getAll().then(res => Array.isArray(res.data) ? setData(res.data) : setData([]));
   };
 
   const handleEdit = (item: Proveedor) => {
@@ -54,8 +54,8 @@ const ProveedorTable: React.FC = () => {
   };
 
   const handleDeactivate = async (id: number) => {
-    await axios.patch(`/api/catalogos/proveedor/${id}/deactivate`);
-    axios.get('/api/catalogos/proveedor').then(res => Array.isArray(res.data) ? setData(res.data) : setData([]));
+    await proveedorAPI.deactivate(id);
+    proveedorAPI.getAll().then(res => Array.isArray(res.data) ? setData(res.data) : setData([]));
   };
 
   return (

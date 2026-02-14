@@ -1,9 +1,15 @@
+import React, { useEffect, useState } from 'react';
+import { tapaBackAPI, proveedorAPI, marcaAPI } from '../../apis/api';
+
 interface Proveedor {
   id: number;
   nombre: string;
 }
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+
+interface Marca {
+  id: number;
+  nombre: string;
+}
 
 interface InvDiaTapaBack {
   id: number;
@@ -24,6 +30,8 @@ interface InvDiaTapaBack {
   falta: boolean;
   celular: string;
   nota: string;
+  marca?: Marca;
+  proveedor?: Proveedor;
 }
 
 const emptyForm: Omit<InvDiaTapaBack, 'id'> = {
@@ -49,17 +57,23 @@ const emptyForm: Omit<InvDiaTapaBack, 'id'> = {
 const InvDiaTapaBackTable: React.FC = () => {
   const [data, setData] = useState<InvDiaTapaBack[]>([]);
   const [proveedores, setProveedores] = useState<Proveedor[]>([]);
+  const [marcas, setMarcas] = useState<Marca[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState(emptyForm);
   const [editId, setEditId] = useState<number|null>(null);
+  
   useEffect(() => {
-    axios.get('/api/proveedor')
+    proveedorAPI.getAll()
       .then(res => Array.isArray(res.data) ? setProveedores(res.data) : setProveedores([]))
       .catch(() => setProveedores([]));
+    
+    marcaAPI.getAll()
+      .then(res => Array.isArray(res.data) ? setMarcas(res.data) : setMarcas([]))
+      .catch(() => setMarcas([]));
   }, []);
 
   useEffect(() => {
-    axios.get('/api/inventario/inv-dia-tapa-back')
+    tapaBackAPI.getAll()
       .then(res => Array.isArray(res.data) ? setData(res.data) : setData([]))
       .catch(() => setData([]));
   }, []);
@@ -76,14 +90,14 @@ const InvDiaTapaBackTable: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editId) {
-      await axios.put(`/api/inventario/inv-dia-tapa-back/${editId}`, form);
+      await tapaBackAPI.update(editId, form);
     } else {
-      await axios.post('/api/inventario/inv-dia-tapa-back', form);
+      await tapaBackAPI.create(form);
     }
     setShowModal(false);
     setEditId(null);
     setForm(emptyForm);
-    axios.get('/api/inventario/inv-dia-tapa-back').then(res => Array.isArray(res.data) ? setData(res.data) : setData([]));
+    tapaBackAPI.getAll().then(res => Array.isArray(res.data) ? setData(res.data) : setData([]));
   };
 
   const handleEdit = (item: InvDiaTapaBack) => {
@@ -102,7 +116,7 @@ const InvDiaTapaBackTable: React.FC = () => {
         <table className="table table-hover align-middle mb-0">
           <thead className="table-light">
             <tr className="small text-uppercase text-muted">
-              <th className="px-4">ID Marca</th>
+              <th>Marca</th>
               <th>Fecha</th>
               <th>Código</th>
               <th>Proveedor</th>
@@ -125,7 +139,7 @@ const InvDiaTapaBackTable: React.FC = () => {
           <tbody>
             {(Array.isArray(data) ? data : []).map(item => (
               <tr key={item.id}>
-                <td className="px-4 fw-bold">{item.id_marca_fk}</td>
+                <td>{item.marca?.nombre || '-'}</td>
                 <td>{item.fecha}</td>
                 <td>{item.codigo}</td>
                 <td>{proveedores.find(p => p.id === item.proveedor_id)?.nombre || 'Sin proveedor'}</td>
@@ -162,8 +176,13 @@ const InvDiaTapaBackTable: React.FC = () => {
                 <div className="modal-body row g-2">
                   {/* Campos del formulario */}
                   <div className="col-6">
-                    <label className="form-label">ID Marca</label>
-                    <input name="id_marca_fk" value={form.id_marca_fk} onChange={handleChange} className="form-control" type="number" required />
+                    <label className="form-label">Marca</label>
+                    <select name="id_marca_fk" value={form.id_marca_fk} onChange={handleChange} className="form-control">
+                      <option value={0}>Sin marca</option>
+                      {marcas.map(marca => (
+                        <option key={marca.id} value={marca.id}>{marca.nombre}</option>
+                      ))}
+                    </select>
                   </div>
                   <div className="col-6">
                     <label className="form-label">Fecha</label>
