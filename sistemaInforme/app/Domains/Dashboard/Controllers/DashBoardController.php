@@ -45,32 +45,32 @@ class DashBoardController extends Controller
             [
                 'nombre' => 'Visores',
                 'cantidad' => InvDiaVisores::sum('t_inv_final') ?? 0,
-                'criticos' => InvDiaVisores::where('t_inv_final', '<=', 5)->count(),
+                'criticos' => InvDiaVisores::whereColumn('t_inv_final', '<=', 'stock_minimo')->count(),
             ],
             [
                 'nombre' => 'Displays',
                 'cantidad' => InvDiaDisplay::sum('t_inv_final') ?? 0,
-                'criticos' => InvDiaDisplay::where('t_inv_final', '<=', 5)->count(),
+                'criticos' => InvDiaDisplay::whereColumn('t_inv_final', '<=', 'stock_minimo')->count(),
             ],
             [
                 'nombre' => 'Baterías Genéricas',
                 'cantidad' => InvDiaBatGenerica::sum('cantidad') ?? 0,
-                'criticos' => InvDiaBatGenerica::where('cantidad', '<=', 5)->count(),
+                'criticos' => InvDiaBatGenerica::whereColumn('cantidad', '<=', 'stock_minimo')->count(),
             ],
             [
                 'nombre' => 'Baterías Originales',
                 'cantidad' => InvDiaBatOriginal::sum('cantidad') ?? 0,
-                'criticos' => InvDiaBatOriginal::where('cantidad', '<=', 5)->count(),
+                'criticos' => InvDiaBatOriginal::whereColumn('cantidad', '<=', 'stock_minimo')->count(),
             ],
             [
                 'nombre' => 'Táctiles',
                 'cantidad' => InvDiaTactil::sum('cantidad') ?? 0,
-                'criticos' => InvDiaTactil::where('cantidad', '<=', 5)->count(),
+                'criticos' => InvDiaTactil::whereColumn('cantidad', '<=', 'stock_minimo')->count(),
             ],
             [
                 'nombre' => 'Tapas Back',
                 'cantidad' => InvDiaTapaBack::sum('t_inv_final') ?? 0,
-                'criticos' => InvDiaTapaBack::where('t_inv_final', '<=', 5)->count(),
+                'criticos' => InvDiaTapaBack::whereColumn('t_inv_final', '<=', 'stock_minimo')->count(),
             ],
             [
                 'nombre' => 'Repuestos Pequeños',
@@ -89,7 +89,7 @@ class DashBoardController extends Controller
 
         // Baterías Genéricas
         $batGenericas = InvDiaBatGenerica::with('marca')
-            ->where('cantidad', '<=', 5)
+            ->whereColumn('cantidad', '<=', 'stock_minimo')
             ->orderBy('cantidad')
             ->limit(5)
             ->get()
@@ -102,7 +102,7 @@ class DashBoardController extends Controller
 
         // Displays
         $displays = InvDiaDisplay::with('marca')
-            ->where('t_inv_final', '<=', 5)
+            ->whereColumn('t_inv_final', '<=', 'stock_minimo')
             ->orderBy('t_inv_final')
             ->limit(5)
             ->get()
@@ -115,7 +115,7 @@ class DashBoardController extends Controller
 
         // Táctiles
         $tactiles = InvDiaTactil::with('marca')
-            ->where('cantidad', '<=', 5)
+            ->whereColumn('cantidad', '<=', 'stock_minimo')
             ->orderBy('cantidad')
             ->limit(5)
             ->get()
@@ -301,7 +301,7 @@ class DashBoardController extends Controller
      */
     private function graficoProductosCriticos()
     {
-        $criticos = InvDiaBatGenerica::where('cantidad', '<=', 5)
+        $criticos = InvDiaBatGenerica::whereColumn('cantidad', '<=', 'stock_minimo')
             ->orderBy('cantidad')
             ->limit(10)
             ->get(['version', 'cantidad']);
@@ -320,7 +320,7 @@ class DashBoardController extends Controller
         $alertas = [];
 
         // ALERTAS CRÍTICAS (Stock = 0 o <= 2)
-        $criticasBat = InvDiaBatGenerica::where('cantidad', '<=', 2)
+        $criticasBat = InvDiaBatGenerica::whereColumn('cantidad', '<=', DB::raw('LEAST(stock_minimo,2)'))
             ->get()
             ->map(fn($item) => [
                 'tipo' => 'critica',
@@ -331,7 +331,7 @@ class DashBoardController extends Controller
                 'proveedor_id' => $item->proveedor_id,
             ]);
 
-        $criticasDisplay = InvDiaDisplay::where('t_inv_final', '<=', 2)
+        $criticasDisplay = InvDiaDisplay::whereColumn('t_inv_final', '<=', DB::raw('LEAST(stock_minimo,2)'))
             ->get()
             ->map(fn($item) => [
                 'tipo' => 'critica',
@@ -343,7 +343,8 @@ class DashBoardController extends Controller
             ]);
 
         // ALERTAS DE ADVERTENCIA (Stock <= 5)
-        $advertenciaBat = InvDiaBatGenerica::whereBetween('cantidad', [3, 5])
+        $advertenciaBat = InvDiaBatGenerica::whereColumn('cantidad', '<=', 'stock_minimo')
+            ->where('cantidad', '>', DB::raw('LEAST(stock_minimo,2)'))
             ->get()
             ->map(fn($item) => [
                 'tipo' => 'advertencia',
@@ -354,7 +355,8 @@ class DashBoardController extends Controller
                 'proveedor_id' => $item->proveedor_id,
             ]);
 
-        $advertenciaDisplay = InvDiaDisplay::whereBetween('t_inv_final', [3, 5])
+        $advertenciaDisplay = InvDiaDisplay::whereColumn('t_inv_final', '<=', 'stock_minimo')
+            ->where('t_inv_final', '>', DB::raw('LEAST(stock_minimo,2)'))
             ->get()
             ->map(fn($item) => [
                 'tipo' => 'advertencia',

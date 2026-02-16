@@ -30,6 +30,7 @@ class InvDiaRptosPeq extends Model
         'antena',
         'porta_sim',
         'boton_lateral',
+        'stock_minimo',
     ];
 
     // Relaciones

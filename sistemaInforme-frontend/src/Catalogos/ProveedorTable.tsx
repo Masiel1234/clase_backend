@@ -111,6 +111,7 @@ const ProveedorTable: React.FC = () => {
                     <label className="form-label">Nombre</label>
                     <input name="nombre" value={form.nombre} onChange={handleChange} className="form-control" required />
                   </div>
+                  {/* Eliminado campo Stock Mínimo porque no existe en Proveedor */}
                   <div className="col-12">
                     <label className="form-label">Activo</label>
                     <input name="activo" checked={form.activo} onChange={handleChange} className="form-check-input ms-2" type="checkbox" />

@@ -31,6 +31,7 @@ class InvDiaDisplay extends Model
         'falt',
         'celular',
         'nota',
+        'stock_minimo',
     ];
 
     // Relaciones

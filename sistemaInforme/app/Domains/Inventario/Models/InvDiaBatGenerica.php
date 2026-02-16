@@ -25,6 +25,7 @@ class InvDiaBatGenerica extends Model
         'faltantes',
         'celulares',
         'devolucion',
+        'stock_minimo',
     ];
 
     // Relaciones

@@ -26,6 +26,7 @@ class InvDiaTactil extends Model
         'faltantes',
         'celulares',
         'devolucion',
+        'stock_minimo',
     ];
 
     // Relaciones

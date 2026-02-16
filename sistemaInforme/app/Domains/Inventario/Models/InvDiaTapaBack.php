@@ -28,6 +28,7 @@ class InvDiaTapaBack extends Model
         'falta',
         'celular',
         'nota',
+        'stock_minimo',
     ];
 
     // Relaciones

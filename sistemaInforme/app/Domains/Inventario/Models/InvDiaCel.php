@@ -29,5 +29,6 @@ class InvDiaCel extends Model
         'no_entrega_o_garantia',
         'devolucion',
         'terceros_comentos',
+        'stock_minimo',
     ];
 }

@@ -31,6 +31,7 @@ interface InvDiaTapaBack {
   falta: boolean;
   celular: string;
   nota: string;
+  stock_minimo: number;
   marca?: Marca;
   proveedor?: Proveedor;
 }
@@ -53,6 +54,7 @@ const emptyForm: Omit<InvDiaTapaBack, 'id'> = {
   falta: false,
   celular: '',
   nota: '',
+  stock_minimo: 5,
 };
 
 const InvDiaTapaBackTable: React.FC = () => {
@@ -137,6 +139,7 @@ const InvDiaTapaBackTable: React.FC = () => {
               <th>Falta</th>
               <th>Celular</th>
               <th>Nota</th>
+              <th>Stock Mínimo</th>
               <th>Acción</th>
             </tr>
           </thead>
@@ -162,6 +165,7 @@ const InvDiaTapaBackTable: React.FC = () => {
                 <td>{item.falta ? 'Sí' : 'No'}</td>
                 <td>{item.celular}</td>
                 <td>{item.nota}</td>
+                <td>{item.stock_minimo}</td>
                 <td>
                   {user?.rol === 'admin' && (
                     <button className="btn btn-warning btn-sm" onClick={() => handleEdit(item)}>Editar</button>
@@ -270,6 +274,19 @@ const InvDiaTapaBackTable: React.FC = () => {
                     <label className="form-label">Nota</label>
                     <textarea name="nota" value={form.nota} onChange={handleChange} className="form-control" />
                   </div>
+                </div>
+                <div className="col-md-6 mt-3">
+                  <label className="form-label d-flex align-items-center">
+                    <span>Stock Mínimo</span>
+                    <span className="ms-2 text-muted" title="Cantidad mínima antes de alerta">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-exclamation-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
+                        <path d="M7.002 11a1 1 0 1 0 2 0 1 1 0 0 0-2 0zm.1-4.995a.905.905 0 0 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0l-.35-3.507z"/>
+                      </svg>
+                    </span>
+                  </label>
+                  <input name="stock_minimo" value={form.stock_minimo} onChange={handleChange} className="form-control border border-warning" type="number" min={1} required placeholder="Ej: 5" />
+                  <div className="form-text text-muted">Define el mínimo de stock antes de mostrar alerta en dashboard.</div>
                 </div>
                 <div className="modal-footer">
                   <button type="submit" className="btn btn-success">Guardar</button>

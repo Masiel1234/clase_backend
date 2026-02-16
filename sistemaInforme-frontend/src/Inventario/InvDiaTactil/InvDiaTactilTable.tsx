@@ -29,6 +29,7 @@ interface InvDiaTactil {
   faltantes: number;
   celulares: string;
   devolucion: number;
+  stock_minimo: number;
   marca?: Marca;
   proveedor?: Proveedor;
 }
@@ -49,6 +50,7 @@ const emptyForm: Omit<InvDiaTactil, 'id'> = {
   faltantes: 1,
   celulares: '',
   devolucion: 1,
+  stock_minimo: 5,
 };
 
 const InvDiaTactilTable: React.FC = () => {
@@ -131,6 +133,7 @@ const InvDiaTactilTable: React.FC = () => {
               <th>Faltantes</th>
               <th>Celulares</th>
               <th>Devolución</th>
+              <th>Stock Mínimo</th>
               <th>Acción</th>
             </tr>
           </thead>
@@ -154,6 +157,7 @@ const InvDiaTactilTable: React.FC = () => {
                 <td>{item.faltantes}</td>
                 <td>{item.celulares}</td>
                 <td>{item.devolucion}</td>
+                <td>{item.stock_minimo}</td>
                 <td>
                   {user?.rol === 'admin' && (
                     <button className="btn btn-warning btn-sm" onClick={() => handleEdit(item)}>Editar</button>
@@ -256,6 +260,19 @@ const InvDiaTactilTable: React.FC = () => {
                     <label className="form-label">Devolución</label>
                     <input name="devolucion" value={form.devolucion} onChange={handleChange} className="form-control" type="number" min={1} step={1} />
                   </div>
+                </div>
+                <div className="col-md-6 mt-3">
+                  <label className="form-label d-flex align-items-center">
+                    <span>Stock Mínimo</span>
+                    <span className="ms-2 text-muted" title="Cantidad mínima antes de alerta">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-exclamation-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
+                        <path d="M7.002 11a1 1 0 1 0 2 0 1 1 0 0 0-2 0zm.1-4.995a.905.905 0 0 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0l-.35-3.507z"/>
+                      </svg>
+                    </span>
+                  </label>
+                  <input name="stock_minimo" value={form.stock_minimo} onChange={handleChange} className="form-control border border-warning" type="number" min={1} required placeholder="Ej: 5" />
+                  <div className="form-text text-muted">Define el mínimo de stock antes de mostrar alerta en dashboard.</div>
                 </div>
                 <div className="modal-footer">
                   <button type="submit" className="btn btn-success">Guardar</button>

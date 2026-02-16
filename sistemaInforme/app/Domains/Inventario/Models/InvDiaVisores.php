@@ -28,6 +28,7 @@ class InvDiaVisores extends Model
         'pedir',
         'celular',
         'nota',
+        'stock_minimo',
     ];
 
 }

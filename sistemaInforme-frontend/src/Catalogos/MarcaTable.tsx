@@ -138,6 +138,7 @@ const MarcaTable: React.FC = () => {
                       ))}
                     </select>
                   </div>
+                  {/* Eliminado campo Stock Mínimo porque no existe en Marca */}
                   <div className="col-12">
                     <label className="form-label">Activo</label>
                     <input name="activo" checked={form.activo} onChange={handleChange} className="form-check-input ms-2" type="checkbox" />
