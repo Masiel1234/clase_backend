@@ -10,7 +10,7 @@ interface StatsCardsProps {
   }>;
 }
 
-const iconMap: { [key: string]: JSX.Element } = {
+const iconMap: { [key: string]: React.ReactNode } = {
   'Celulares': <Smartphone />,
   'Visores': <Monitor />,
   'Displays': <Monitor />,

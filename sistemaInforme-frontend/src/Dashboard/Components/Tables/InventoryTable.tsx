@@ -1,6 +1,4 @@
-import React from 'react';
-import { useAuth } from '../../../auth/AuthContext';
-import { Plus, MoreVertical } from 'lucide-react';
+// ...existing code...
 
 interface Celular {
   referencia: string;
@@ -14,7 +12,7 @@ interface InventoryTableProps {
 }
 
 const InventoryTable: React.FC<InventoryTableProps> = ({ data }) => {
-  const { user } = useAuth();
+  // ...existing code...
   return (
     <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
       <div className="card-header bg-white p-3 d-flex justify-content-between align-items-center">

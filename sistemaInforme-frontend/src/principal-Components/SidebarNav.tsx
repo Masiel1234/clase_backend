@@ -1,6 +1,6 @@
 import { LayoutDashboard, Package, Layers, Tag, Users, ChevronDown, ChevronRight } from 'lucide-react';
 import NavItem from './NavItem';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const SidebarNav = () => {

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import InventoryModule from '../principal-Components/Modules/InventoryModule';
 import MainHeader from '../principal-Components/MainHeader';
 import StatsCards from './Components/Graphics/StatsCards';
-import { LayoutDashboard } from 'lucide-react';
 import SidebarNav from '../principal-Components/SidebarNav';
 import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 import { dashboardAPI } from '../apis/api';

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../../auth/AuthContext';
 import { rptosPeqAPI, marcaAPI } from '../../apis/api';
 
@@ -76,7 +76,7 @@ const InvDiaRptosPeqTable: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const target = e.target as HTMLInputElement | HTMLSelectElement;
-    const { name, value, type } = target;
+    const { name, value } = target;
     setForm(prev => ({
       ...prev,
       [name]: value
