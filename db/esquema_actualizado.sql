@@ -13,10 +13,10 @@ CREATE TABLE IF NOT EXISTS `inventario`.`users` (
   `nombre` VARCHAR(50) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
   `rol` ENUM('admin', 'encargado') NOT NULL,
-  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP(),
-  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `nombre` (`nombre` ASC) VISIBLE
+  UNIQUE INDEX `nombre` (`nombre` ASC)
 )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
@@ -30,11 +30,11 @@ CREATE TABLE IF NOT EXISTS `inventario`.`marcas` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(50) NOT NULL,
   `proveedor_id` INT(11) NULL DEFAULT NULL,
-  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP(),
-  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `nombre` (`nombre` ASC) VISIBLE,
-  INDEX `proveedor_id` (`proveedor_id` ASC) VISIBLE,
+  UNIQUE INDEX `nombre` (`nombre` ASC),
+  INDEX `proveedor_id` (`proveedor_id` ASC),
   CONSTRAINT `marcas_ibfk_1`
     FOREIGN KEY (`proveedor_id`)
     REFERENCES `inventario`.`proveedor` (`id`)
@@ -50,10 +50,10 @@ DEFAULT CHARACTER SET = utf8mb4;
 CREATE TABLE IF NOT EXISTS `inventario`.`proveedor` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(50) NOT NULL,
-  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP(),
-  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `nombre` (`nombre` ASC) VISIBLE)
+  UNIQUE INDEX `nombre` (`nombre` ASC))
 ENGINE = InnoDB
 AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb4;
@@ -80,11 +80,11 @@ CREATE TABLE IF NOT EXISTS `inventario`.`inv_dia_bat_generica` (
   `celulares` VARCHAR(100) NULL DEFAULT NULL,
   `devolucion` INT(11) NULL DEFAULT NULL,
   `stock_minimo` INT(11) NULL DEFAULT 5,
-  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP(),
-  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  INDEX `id_marca_fk` (`id_marca_fk` ASC) VISIBLE,
-  INDEX `proveedor_id` (`proveedor_id` ASC) VISIBLE,
+  INDEX `id_marca_fk` (`id_marca_fk` ASC),
+  INDEX `proveedor_id` (`proveedor_id` ASC),
   CONSTRAINT `inv_dia_bat_generica_ibfk_1`
     FOREIGN KEY (`id_marca_fk`)
     REFERENCES `inventario`.`marcas` (`id`),
@@ -116,11 +116,11 @@ CREATE TABLE IF NOT EXISTS `inventario`.`inv_dia_bat_original` (
   `celulares` VARCHAR(100) NULL DEFAULT NULL,
   `devolucion` INT(11) NULL DEFAULT NULL,
   `stock_minimo` INT(11) NULL DEFAULT 5,
-  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP(),
-  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  INDEX `id_marca_fk` (`id_marca_fk` ASC) VISIBLE,
-  INDEX `proveedor_id` (`proveedor_id` ASC) VISIBLE,
+  INDEX `id_marca_fk` (`id_marca_fk` ASC),
+  INDEX `proveedor_id` (`proveedor_id` ASC),
   CONSTRAINT `inv_dia_bat_original_ibfk_1`
     FOREIGN KEY (`id_marca_fk`)
     REFERENCES `inventario`.`marcas` (`id`),
@@ -159,8 +159,8 @@ CREATE TABLE IF NOT EXISTS `inventario`.`inv_dia_cel` (
   `devolucion` VARCHAR(50) NULL DEFAULT NULL,
   `terceros_comentos` TEXT NULL DEFAULT NULL,
   `stock_minimo` INT(11) NULL DEFAULT 5,
-  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP(),
-  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 2
@@ -193,11 +193,11 @@ CREATE TABLE IF NOT EXISTS `inventario`.`inv_dia_display` (
   `celular` VARCHAR(100) NULL DEFAULT NULL,
   `nota` TEXT NULL DEFAULT NULL,
   `stock_minimo` INT(11) NULL DEFAULT 5,
-  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP(),
-  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  INDEX `id_marca_fk` (`id_marca_fk` ASC) VISIBLE,
-  INDEX `proveedor_id` (`proveedor_id` ASC) VISIBLE,
+  INDEX `id_marca_fk` (`id_marca_fk` ASC),
+  INDEX `proveedor_id` (`proveedor_id` ASC),
   CONSTRAINT `inv_dia_display_ibfk_1`
     FOREIGN KEY (`id_marca_fk`)
     REFERENCES `inventario`.`marcas` (`id`),
@@ -235,10 +235,10 @@ CREATE TABLE IF NOT EXISTS `inventario`.`inv_dia_rptos_peq` (
   `porta_sim` INT(11) NULL DEFAULT NULL,
   `boton_lateral` INT(11) NULL DEFAULT NULL,
   `stock_minimo` INT(11) NULL DEFAULT 5,
-  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP(),
-  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  INDEX `id_marca_fk` (`id_marca_fk` ASC) VISIBLE,
+  INDEX `id_marca_fk` (`id_marca_fk` ASC),
   CONSTRAINT `inv_dia_rptos_peq_ibfk_1`
     FOREIGN KEY (`id_marca_fk`)
     REFERENCES `inventario`.`marcas` (`id`))
@@ -268,11 +268,11 @@ CREATE TABLE IF NOT EXISTS `inventario`.`inv_dia_tactil` (
   `celulares` VARCHAR(100) NULL DEFAULT NULL,
   `devolucion` INT(11) NULL DEFAULT NULL,
   `stock_minimo` INT(11) NULL DEFAULT 5,
-  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP(),
-  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  INDEX `id_marca_fk` (`id_marca_fk` ASC) VISIBLE,
-  INDEX `proveedor_id` (`proveedor_id` ASC) VISIBLE,
+  INDEX `id_marca_fk` (`id_marca_fk` ASC),
+  INDEX `proveedor_id` (`proveedor_id` ASC),
   CONSTRAINT `inv_dia_tactil_ibfk_1`
     FOREIGN KEY (`id_marca_fk`)
     REFERENCES `inventario`.`marcas` (`id`),
@@ -307,11 +307,11 @@ CREATE TABLE IF NOT EXISTS `inventario`.`inv_dia_tapa_back` (
   `celular` VARCHAR(100) NULL DEFAULT NULL,
   `nota` TEXT NULL DEFAULT NULL,
   `stock_minimo` INT(11) NULL DEFAULT 5,
-  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP(),
-  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  INDEX `id_marca_fk` (`id_marca_fk` ASC) VISIBLE,
-  INDEX `proveedor_id` (`proveedor_id` ASC) VISIBLE,
+  INDEX `id_marca_fk` (`id_marca_fk` ASC),
+  INDEX `proveedor_id` (`proveedor_id` ASC),
   CONSTRAINT `inv_dia_tapa_back_ibfk_1`
     FOREIGN KEY (`id_marca_fk`)
     REFERENCES `inventario`.`marcas` (`id`),
@@ -348,10 +348,10 @@ CREATE TABLE IF NOT EXISTS `inventario`.`inv_dia_visores` (
   `celular` VARCHAR(100) NULL DEFAULT NULL,
   `nota` TEXT NULL DEFAULT NULL,
   `stock_minimo` INT(11) NULL DEFAULT 5,
-  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP(),
-  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
+  `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  INDEX `proveedor_id` (`proveedor_id` ASC) VISIBLE,
+  INDEX `proveedor_id` (`proveedor_id` ASC),
   CONSTRAINT `inv_dia_visores_ibfk_1`
     FOREIGN KEY (`proveedor_id`)
     REFERENCES `inventario`.`proveedor` (`id`))
